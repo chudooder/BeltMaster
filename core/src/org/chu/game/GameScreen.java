@@ -1,7 +1,9 @@
 package org.chu.game;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -19,7 +21,11 @@ public class GameScreen implements Screen {
 	private List<Belt> belts;
 	private List<Box> boxes;
 	
+	private Queue<Box> removeQueue;
+	
 	private InputMultiplexer input;
+	
+	private RenderQueue renderQueue;
 	
 	public GameScreen(BeltMaster game) {
 		this.game = game;
@@ -31,12 +37,16 @@ public class GameScreen implements Screen {
 		
 		input = new InputMultiplexer();
 		
+		renderQueue = new RenderQueue();
+		removeQueue = new LinkedList<Box>();
+		
 		createBelt(68, 100, 7, new boolean[]{true, true, true, true, true}, 0);
 		createBelt(196, 100, 5, new boolean[]{true, true, true, true, true}, 0);
 		createBelt(84, 132, 3, new boolean[]{true, true, true, true, true}, 2);
 		createBelt(32, 68, 8, new boolean[]{true, true, true, true, true}, 4);
 		
 		createBox(108, 200, Color.RED);
+		
 		
 		Gdx.input.setInputProcessor(input);
 	}
@@ -65,14 +75,18 @@ public class GameScreen implements Screen {
 		
 		game.batch.setProjectionMatrix(camera.combined);
 		
-		game.batch.begin();
-		// draw things
+
+		// get render calls
 		for(Belt b : getBelts()) {
-			b.render(game.getStateTime(), game.batch);
+			b.render(game.getStateTime(), renderQueue);
 		}
 		for(Box b : boxes) {
-			b.render(game.getStateTime(), game.batch);
+			b.render(game.getStateTime(), renderQueue);
 		}
+		
+		// draw things
+		game.batch.begin();
+		renderQueue.execute(game.batch);
 		game.batch.end();
 		
 		// update things
@@ -81,8 +95,15 @@ public class GameScreen implements Screen {
 
 	private void update() {
 		if(isPaused) return;
+		
+		// update box positions
 		for(Box b : boxes) {
 			b.update();
+		}
+		
+		// process remove queue
+		while(!removeQueue.isEmpty()) {
+			boxes.remove(removeQueue.poll());
 		}
 	}
 
@@ -126,6 +147,10 @@ public class GameScreen implements Screen {
 
 	public List<Box> getBoxes() {
 		return boxes;
+	}
+
+	public void removeBox(Box box) {
+		removeQueue.add(box);
 	}
 
 }

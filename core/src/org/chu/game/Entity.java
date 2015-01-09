@@ -1,6 +1,5 @@
 package org.chu.game;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 public abstract class Entity {
@@ -20,5 +19,5 @@ public abstract class Entity {
 
 	public abstract void update();
 	
-	public abstract void render(float time, SpriteBatch batch);
+	public abstract void render(float time, RenderQueue queue);
 }

@@ -13,6 +13,7 @@ public class Box extends Entity {
 	
 	private static final float GRAVITY = 200.0f;
 	private static final float SPEED = 20.0f;
+	private static final float DEPTH = 0f;
 	
 	private static Animation standing;
 	private static Animation fallingLeft;
@@ -29,12 +30,16 @@ public class Box extends Entity {
 	private Animation currentAnim;
 	
 	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("box-sheet.png", Texture.class);
+		Texture sheet = assets.get("game-objects.png", Texture.class);
 		TextureRegion[][] tmp = TextureRegion.split(sheet, 
-				sheet.getWidth()/4, sheet.getHeight()/2);
-		TextureRegion[] fallLeft = tmp[0];
-		TextureRegion[] fallRight = tmp[1];
-		TextureRegion stand = tmp[0][0];
+				sheet.getWidth()/8, sheet.getHeight()/8);
+		TextureRegion[] fallLeft = new TextureRegion[4];
+		TextureRegion[] fallRight = new TextureRegion[4];
+		for(int i=0; i<4; i++) {
+			fallLeft[i] = tmp[0][4+i];
+			fallRight[i] = tmp[1][4+i];
+		}
+		TextureRegion stand = tmp[0][4];
 		
 		standing = new Animation(0, stand);
 		fallingLeft = new Animation(0.065f, fallLeft);
@@ -109,15 +114,13 @@ public class Box extends Entity {
 		
 		// destroy box if out of bounds
 		if(y < -32) {
-			screen.getBoxes().remove(this);
+			screen.removeBox(this);
 		}
 	}
 
 	@Override
-	public void render(float time, SpriteBatch batch) {
-		batch.setColor(color);	// tint the box the correct color
-		batch.draw(currentAnim.getKeyFrame(timer), x, y);
-		batch.setColor(Color.WHITE);	// reset color
+	public void render(float time, RenderQueue queue) {
+		queue.draw(currentAnim.getKeyFrame(timer), x, y, DEPTH, color);
 	}
 	
 	private enum BoxState {

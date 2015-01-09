@@ -19,6 +19,7 @@ public class Belt extends Entity {
 	
 	private static final float SLOW_SPEED = 0.05f;
 	private static final int FALL_POINT = 7;
+	private static final float DEPTH = 0.1f;
 	
 	private static Animation leftCW;
 	private static Animation midCW;
@@ -28,12 +29,17 @@ public class Belt extends Entity {
 	private static Animation rightCCW;
 
 	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("belt-sheet.png", Texture.class);
+		Texture sheet = assets.get("game-objects.png", Texture.class);
 		TextureRegion[][] tmp = TextureRegion.split(sheet, 
-				sheet.getWidth()/4, sheet.getHeight()/4);
-		TextureRegion[] leftFrames = tmp[0];
-		TextureRegion[] midFrames = tmp[1];
-		TextureRegion[] rightFrames = tmp[2];
+				sheet.getWidth()/8, sheet.getHeight()/8);
+		TextureRegion[] leftFrames = new TextureRegion[4];
+		TextureRegion[] midFrames = new TextureRegion[4];
+		TextureRegion[] rightFrames = new TextureRegion[4];
+		for(int i=0; i<4; i++) {
+			leftFrames[i] = tmp[4][4+i];
+			midFrames[i] = tmp[5][4+i];
+			rightFrames[i] = tmp[6][4+i];
+		}
 		
 		leftCW = new Animation(SLOW_SPEED, leftFrames);
 		midCW = new Animation(SLOW_SPEED, midFrames);
@@ -81,26 +87,23 @@ public class Belt extends Entity {
 	}
 
 	@Override
-	public void render(float time, SpriteBatch batch) {
+	public void render(float time, RenderQueue queue) {
 		float realtime = time;
 		if(state == 2) 
 			realtime = 0;
 		if(state == 0 || state == 4) 
 			realtime = time * 2;
 		if(state > 2) {
-			batch.setColor(0.7f, 0.9f, 1.0f, 1.0f);
-			batch.draw(leftCW.getKeyFrame(realtime, true), x, y);
+			queue.draw(leftCW.getKeyFrame(realtime, true), x, y, DEPTH);
 			for(int i=1; i<length-1; i++)
-				batch.draw(midCW.getKeyFrame(realtime, true), x+i*16, y);
-			batch.draw(rightCW.getKeyFrame(realtime, true), x+(length-1)*16, y);
+				queue.draw(midCW.getKeyFrame(realtime, true), x+i*16, y, DEPTH);
+			queue.draw(rightCW.getKeyFrame(realtime, true), x+(length-1)*16, y, DEPTH);
 		} else {
-			batch.setColor(0.8f, 1.0f, 0.8f, 1.0f);
-			batch.draw(leftCCW.getKeyFrame(realtime, true), x, y);
+			queue.draw(leftCCW.getKeyFrame(realtime, true), x, y, DEPTH);
 			for(int i=1; i<length-1; i++)
-				batch.draw(midCCW.getKeyFrame(realtime, true), x+i*16, y);
-			batch.draw(rightCCW.getKeyFrame(realtime, true), x+(length-1)*16, y);
+				queue.draw(midCCW.getKeyFrame(realtime, true), x+i*16, y, DEPTH);
+			queue.draw(rightCCW.getKeyFrame(realtime, true), x+(length-1)*16, y, DEPTH);
 		}
-		batch.setColor(Color.WHITE);
 	}
 
 	@Override

@@ -39,8 +39,7 @@ public class BeltMaster extends Game {
 	}
 	
 	private void loadAssets() {
-		assets.load("belt-sheet.png", Texture.class);
-		assets.load("box-sheet.png", Texture.class);
+		assets.load("game-objects.png", Texture.class);
 	}
 
 	@Override
