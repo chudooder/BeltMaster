@@ -12,21 +12,27 @@ public class Belt extends Entity {
 	
 	private int length;
 	private Rectangle touchRegion;
-	
-	// represents the valid states this belt can be in (left, stopped, right; slow, fast)
 	private boolean[] validStates;
 	private int state;
 	
+	// physics constants
 	private static final float SLOW_SPEED = 0.05f;
 	private static final int FALL_POINT = 7;
+	
+	// render depth
 	private static final float DEPTH = 0.1f;
 	
+	// animation and rendering textures
 	private static Animation leftCW;
 	private static Animation midCW;
 	private static Animation rightCW;
 	private static Animation leftCCW;
 	private static Animation midCCW;
 	private static Animation rightCCW;
+	private static TextureRegion cwCircle;
+	private static TextureRegion cwArrow;
+	private static TextureRegion ccwCircle;
+	private static TextureRegion ccwArrow;
 
 	public static void setupAnimations(AssetManager assets) {
 		Texture sheet = assets.get("game-objects.png", Texture.class);
@@ -40,6 +46,11 @@ public class Belt extends Entity {
 			midFrames[i] = tmp[5][4+i];
 			rightFrames[i] = tmp[6][4+i];
 		}
+		
+		cwCircle = new TextureRegion(sheet, 64, 112, 8, 8);
+		cwArrow = new TextureRegion(sheet, 72, 112, 8, 8);
+		ccwCircle = new TextureRegion(sheet, 64, 120, 8, 8);
+		ccwArrow = new TextureRegion(sheet, 72, 120, 8, 8);
 		
 		leftCW = new Animation(SLOW_SPEED, leftFrames);
 		midCW = new Animation(SLOW_SPEED, midFrames);
@@ -89,20 +100,40 @@ public class Belt extends Entity {
 	@Override
 	public void render(float time, RenderQueue queue) {
 		float realtime = time;
-		if(state == 2) 
-			realtime = 0;
 		if(state == 0 || state == 4) 
 			realtime = time * 2;
 		if(state > 2) {
+			// main body
 			queue.draw(leftCW.getKeyFrame(realtime, true), x, y, DEPTH);
 			for(int i=1; i<length-1; i++)
 				queue.draw(midCW.getKeyFrame(realtime, true), x+i*16, y, DEPTH);
 			queue.draw(rightCW.getKeyFrame(realtime, true), x+(length-1)*16, y, DEPTH);
-		} else {
+			// endpoint circles
+			queue.draw(cwCircle, x+2, y+2, DEPTH);
+			queue.draw(cwCircle, x+(length-1)*16+6, y+2, DEPTH);
+			// scrolling arrows
+			int offset = (int) ((realtime/SLOW_SPEED) % 8);
+			for(int i=6+offset; i<(length-1)*16+offset; i+=8) {
+				queue.draw(cwArrow, x + i, y + 2, DEPTH);
+			}
+		} else if(state < 2) {
 			queue.draw(leftCCW.getKeyFrame(realtime, true), x, y, DEPTH);
 			for(int i=1; i<length-1; i++)
 				queue.draw(midCCW.getKeyFrame(realtime, true), x+i*16, y, DEPTH);
 			queue.draw(rightCCW.getKeyFrame(realtime, true), x+(length-1)*16, y, DEPTH);
+			// endpoint circles
+			queue.draw(ccwCircle, x+2, y+2, DEPTH);
+			queue.draw(ccwCircle, x+(length-1)*16+6, y+2, DEPTH);
+			// scrolling arrows
+			int offset = (int) (8 - (realtime/SLOW_SPEED % 8));
+			for(int i=(length-1)*16+offset; i>=6+offset; i-=8) {
+				queue.draw(ccwArrow, x + i, y + 2, DEPTH);
+			}
+		} else {
+			queue.draw(leftCCW.getKeyFrame(0, true), x, y, DEPTH);
+			for(int i=1; i<length-1; i++)
+				queue.draw(midCCW.getKeyFrame(0, true), x+i*16, y, DEPTH);
+			queue.draw(rightCCW.getKeyFrame(0, true), x+(length-1)*16, y, DEPTH);
 		}
 	}
 

@@ -34,14 +34,17 @@ public class RenderQueue {
 			batch.setColor(call.color);
 			batch.draw(call.region, call.x, call.y);
 		}
+		RenderCall.callId = 0;
 	}
 
-	private class RenderCall implements Comparable<RenderCall> {
+	private static class RenderCall implements Comparable<RenderCall> {
+		static int callId = 0;
 		TextureRegion region;
 		float x;
 		float y;
 		float z;
 		Color color;
+		int id;
 		
 		public RenderCall(TextureRegion region, float x, float y, float z, Color color) {
 			this.region = region;
@@ -49,17 +52,27 @@ public class RenderQueue {
 			this.y = y;
 			this.z = z;
 			this.color = color;
+			id = callId++;
 		}
 		
 		@Override
 		public int compareTo(RenderCall other) {
+			// sort by z-depth first
 			if(this.z > other.z) {
 				return -1;
 			} else if(this.z < other.z) {
 				return 1;
-			} else {
-				return region.hashCode() - other.region.hashCode();
 			}
+			
+			// group same textures together
+			if(region.getTexture().hashCode() > other.region.getTexture().hashCode()) {
+				return -1;
+			} else if(region.getTexture().hashCode() < other.region.getTexture().hashCode()) {
+				return 1;
+			}
+			
+			// otherwise draw in call order
+			return id - other.id;
 		}
 	}
 
