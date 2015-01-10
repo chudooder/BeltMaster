@@ -5,6 +5,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.chu.game.input.BeltGestureProcessor;
+import org.chu.game.objects.Belt;
+import org.chu.game.objects.Box;
+import org.chu.game.objects.Entity;
+import org.chu.game.objects.Truck;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -47,7 +53,7 @@ public class GameScreen implements Screen {
 		
 		createBox(108, 200, Box.GREEN);
 		
-		createTruck(8, 16, Box.GREEN);
+		createTruck(8, 16, Box.RED);
 		
 		Gdx.input.setInputProcessor(input);
 	}
@@ -61,7 +67,7 @@ public class GameScreen implements Screen {
 	
 	private void createBox(int x, int y, Color c) {
 		Box b = new Box(x, y, c);
-		b.screen = this;
+		b.setScreen(this);
 		addEntity(b);
 	}
 	
@@ -71,7 +77,7 @@ public class GameScreen implements Screen {
 	}
 	
 	public void addEntity(Entity e) {
-		e.screen = this;
+		e.setScreen(this);
 		addQueue.add(e);
 	}
 

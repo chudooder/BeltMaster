@@ -1,5 +1,10 @@
 package org.chu.game;
 
+import org.chu.game.objects.Belt;
+import org.chu.game.objects.Box;
+import org.chu.game.objects.ScorePopup;
+import org.chu.game.objects.Truck;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

@@ -1,7 +1,9 @@
-package org.chu.game;
+package org.chu.game.objects;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;

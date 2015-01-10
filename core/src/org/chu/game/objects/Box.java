@@ -1,4 +1,6 @@
-package org.chu.game;
+package org.chu.game.objects;
+
+import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;

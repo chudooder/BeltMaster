@@ -1,4 +1,6 @@
-package org.chu.game;
+package org.chu.game.input;
+
+import org.chu.game.objects.Belt;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;

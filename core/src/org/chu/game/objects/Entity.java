@@ -1,4 +1,7 @@
-package org.chu.game;
+package org.chu.game.objects;
+
+import org.chu.game.GameScreen;
+import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.math.Rectangle;
 
@@ -15,6 +18,10 @@ public abstract class Entity {
 		this.x = x;
 		this.y = y;
 		hitbox = new Rectangle();
+	}
+	
+	public void setScreen(GameScreen s) {
+		screen = s;
 	}
 
 	public abstract void update();
