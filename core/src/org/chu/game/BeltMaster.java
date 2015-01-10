@@ -34,6 +34,8 @@ public class BeltMaster extends Game {
 		// setup animations
 		Belt.setupAnimations(assets);
 		Box.setupAnimations(assets);
+		Truck.setupAnimations(assets);
+		ScorePopup.setupAnimations(assets);
 		
 		this.setScreen(new MainMenuScreen(this));
 	}

@@ -11,17 +11,9 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Belt extends Entity {
 	
-	private int length;
-	private Rectangle touchRegion;
-	private boolean[] validStates;
-	private int state;
-	
-	private float timer;
-	private int frame;
-	
 	// physics constants
 	private static final float SLOW_SPEED = (1.0f/30.0f);
-	private static final int FALL_POINT = 7;
+	private static final int FALL_POINT = 5;
 	
 	// render depth
 	private static final float DEPTH = 0.1f;
@@ -34,6 +26,15 @@ public class Belt extends Entity {
 	private static TextureRegion cwArrow;
 	private static TextureRegion ccwCircle;
 	private static TextureRegion ccwArrow;
+	private static TextureRegion stopCircle;
+	
+	private int length;
+	private Rectangle touchRegion;
+	private boolean[] validStates;
+	private int state;
+	
+	private float timer;
+	private int frame;
 
 	public static void setupAnimations(AssetManager assets) {
 		Texture sheet = assets.get("game-objects.png", Texture.class);
@@ -52,6 +53,7 @@ public class Belt extends Entity {
 		cwArrow = new TextureRegion(sheet, 72, 112, 8, 8);
 		ccwCircle = new TextureRegion(sheet, 64, 120, 8, 8);
 		ccwArrow = new TextureRegion(sheet, 72, 120, 8, 8);
+		stopCircle = new TextureRegion(sheet, 80, 112, 8, 8);
 	}
 	
 	public Belt(int x, int y, int length, boolean[] validStates, int initialState) {
@@ -119,6 +121,9 @@ public class Belt extends Entity {
 			for(int i=(length-1)*16+frame; i>=6+frame; i-=8) {
 				queue.draw(ccwArrow, x + i, y + 2, DEPTH);
 			}
+		} else {
+			queue.draw(stopCircle, x+2, y+2, DEPTH);
+			queue.draw(stopCircle, x+(length-1)*16+6, y+2, DEPTH);
 		}
 	}
 

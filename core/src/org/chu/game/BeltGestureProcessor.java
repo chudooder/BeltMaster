@@ -24,7 +24,6 @@ public class BeltGestureProcessor implements GestureListener {
 				|| y < box.y || y > box.y + box.height)
 			return false;
 		isSelected = true;
-		System.out.println("Touched belt @("+belt.x+", "+belt.y+")");
 		return true;
 	}
 
@@ -46,7 +45,6 @@ public class BeltGestureProcessor implements GestureListener {
 
 	@Override
 	public boolean fling(float velocityX, float velocityY, int button) {
-		System.out.println(velocityX);
 		if(isSelected) {
 			if(velocityX > 1500) {
 				belt.setState(4);

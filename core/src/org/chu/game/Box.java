@@ -15,7 +15,11 @@ public class Box extends Entity {
 	private static final float SPEED = 30.0f;
 	private static final float DEPTH = 0f;
 	
-	private static Animation standing;
+	public static final Color RED = new Color(1f, 0f, 0f, 1f);
+	public static final Color GREEN = new Color(0f, 1f, 0f, 1f);
+	public static final Color BLUE = new Color(0f, 0.423f, 1f, 1f);
+	public static final Color YELLOW = new Color(1f, 0.753f, 0f, 1f);
+	
 	private static Animation fallingLeft;
 	private static Animation fallingRight;
 
@@ -41,14 +45,13 @@ public class Box extends Entity {
 		}
 		TextureRegion stand = tmp[0][4];
 		
-		standing = new Animation(0, stand);
 		fallingLeft = new Animation(0.065f, fallLeft);
 		fallingLeft.setPlayMode(Animation.PlayMode.LOOP);
 		fallingRight = new Animation(0.065f, fallRight);
 		fallingRight.setPlayMode(Animation.PlayMode.LOOP);
 	}
 	
-	public Box(int x, int y, Color color) {
+	public Box(float x, float y, Color color) {
 		super(x, y);
 		this.color = color;
 		this.hitbox = new Rectangle(x + 4, y + 4, 10, 10);
@@ -97,14 +100,21 @@ public class Box extends Entity {
 			vy -= GRAVITY * Gdx.graphics.getDeltaTime();
 			y += vy * Gdx.graphics.getDeltaTime();
 			
-			for(Belt belt : screen.getBelts()) {
-				if(hitbox.overlaps(belt.hitbox)) { 
-					this.belt = belt;
-					// push up out of belt
-					this.y = belt.y + belt.hitbox.height - 4;
-					vy = 0;
-					// set to the appropriate state
-					state = BoxState.STANDING;
+			for(Entity e : screen.getEntities()) {
+				if(hitbox.overlaps(e.hitbox)) { 
+					if(e instanceof Belt) {
+						Belt b = (Belt)e;
+						this.belt = b;
+						// push up out of belt
+						this.y = belt.y + belt.hitbox.height - 4;
+						vy = 0;
+						// set to the appropriate state
+						state = BoxState.STANDING;
+					} else if(e instanceof Truck) {
+						Truck t = (Truck) e;
+						screen.addEntity(new ScorePopup(t.x, t.y+32, t.getColor().equals(color)));
+						screen.removeEntity(this);
+					}
 				}
 			}
 		}
@@ -114,7 +124,7 @@ public class Box extends Entity {
 		
 		// destroy box if out of bounds
 		if(y < -32) {
-			screen.removeBox(this);
+			screen.removeEntity(this);
 		}
 	}
 

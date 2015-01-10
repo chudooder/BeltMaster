@@ -11,7 +11,7 @@ public abstract class Entity {
 	
 	protected GameScreen screen;
 	
-	public Entity(int x, int y) {
+	public Entity(float x, float y) {
 		this.x = x;
 		this.y = y;
 		hitbox = new Rectangle();
