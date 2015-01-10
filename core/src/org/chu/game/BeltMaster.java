@@ -3,6 +3,7 @@ package org.chu.game;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.ScorePopup;
+import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
 
 import com.badlogic.gdx.Game;
@@ -40,6 +41,7 @@ public class BeltMaster extends Game {
 		Belt.setupAnimations(assets);
 		Box.setupAnimations(assets);
 		Truck.setupAnimations(assets);
+		Spawner.setupAnimations(assets);
 		ScorePopup.setupAnimations(assets);
 		
 		this.setScreen(new MainMenuScreen(this));

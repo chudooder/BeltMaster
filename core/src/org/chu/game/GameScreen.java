@@ -9,6 +9,7 @@ import org.chu.game.input.BeltGestureProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Entity;
+import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
 
 import com.badlogic.gdx.Gdx;
@@ -53,6 +54,12 @@ public class GameScreen implements Screen {
 		
 		createBox(108, 200, Box.GREEN);
 		
+		Queue<Color> queue = new LinkedList<Color>();
+		queue.add(Box.RED);
+		queue.add(Box.GREEN);
+		queue.add(Box.BLUE);
+		createSpawner(100, 240-32, queue, 3f);
+		
 		createTruck(8, 16, Box.RED);
 		
 		Gdx.input.setInputProcessor(input);
@@ -74,6 +81,12 @@ public class GameScreen implements Screen {
 	private void createTruck(int x, int y, Color c) {
 		Truck t = new Truck(x, y, c);
 		addEntity(t);
+	}
+	
+	private void createSpawner(int x, int y, Queue<Color> colors, float spawnTime) {
+		Spawner s = new Spawner(x, y, colors, spawnTime);
+		s.setScreen(this);
+		addEntity(s);
 	}
 	
 	public void addEntity(Entity e) {
