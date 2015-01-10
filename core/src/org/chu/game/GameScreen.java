@@ -41,9 +41,9 @@ public class GameScreen implements Screen {
 		removeQueue = new LinkedList<Box>();
 		
 		createBelt(68, 100, 7, new boolean[]{true, true, true, true, true}, 0);
-		createBelt(196, 100, 5, new boolean[]{true, true, true, true, true}, 0);
-		createBelt(84, 132, 3, new boolean[]{true, true, true, true, true}, 2);
-		createBelt(32, 68, 8, new boolean[]{true, true, true, true, true}, 4);
+//		createBelt(196, 100, 5, new boolean[]{true, true, true, true, true}, 0);
+//		createBelt(84, 132, 3, new boolean[]{true, true, true, true, true}, 2);
+//		createBelt(32, 68, 8, new boolean[]{true, true, true, true, true}, 4);
 		
 		createBox(108, 200, Color.RED);
 		

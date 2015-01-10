@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Box extends Entity {
 	
 	private static final float GRAVITY = 200.0f;
-	private static final float SPEED = 20.0f;
+	private static final float SPEED = 30.0f;
 	private static final float DEPTH = 0f;
 	
 	private static Animation standing;
@@ -82,7 +82,7 @@ public class Box extends Entity {
 		else if(state == BoxState.FALLING_LEFT || state == BoxState.FALLING_RIGHT) {
 			timer += Gdx.graphics.getDeltaTime();
 			// switch state if box is sufficiently past the end of the belt
-			if(timer > 0.25f) {
+			if(timer > 0.12f) {
 				state = BoxState.FREE_FALLING;
 			}
 			// translate box in velocity of conveyor belt
