@@ -4,10 +4,7 @@ import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -28,12 +25,15 @@ public class Belt extends Entity {
 	private static TextureRegion cwArrow;
 	private static TextureRegion ccwCircle;
 	private static TextureRegion ccwArrow;
+	private static TextureRegion cwLockedArrow;
+	private static TextureRegion ccwLockedArrow;
 	private static TextureRegion stopCircle;
+	private static TextureRegion lock;
 	
 	private int length;
 	private Rectangle touchRegion;
-	private boolean[] validStates;
 	private int state;
+	private boolean locked;
 	
 	private float timer;
 	private int frame;
@@ -56,16 +56,19 @@ public class Belt extends Entity {
 		ccwCircle = new TextureRegion(sheet, 64, 120, 8, 8);
 		ccwArrow = new TextureRegion(sheet, 72, 120, 8, 8);
 		stopCircle = new TextureRegion(sheet, 80, 112, 8, 8);
+		cwLockedArrow = new TextureRegion(sheet, 88, 112, 8, 8);
+		ccwLockedArrow = new TextureRegion(sheet, 88, 120, 8, 8);
+		lock = new TextureRegion(sheet, 96, 112, 16, 16);
 	}
 	
-	public Belt(int x, int y, int length, boolean[] validStates, int initialState) {
+	public Belt(int x, int y, int length, int initialState, boolean locked) {
 		super(x, y);
 		this.length = length;
 		if(length < 2) {
 			System.err.println("ERR: Invalid belt length");
 		}
-		this.validStates = validStates;
 		this.state = initialState;
+		this.locked = locked;
 		this.timer = 0;
 		
 		// create hitboxes
@@ -74,11 +77,11 @@ public class Belt extends Entity {
 	}
 	
 	public void setState(int newState) {
+		if(locked) return;
 		if(newState < 0 || newState >= 5) {
 			System.err.println("ERR: Try to set belt to invalid state: "+newState);
 			return;
 		}
-		if(!validStates[newState]) return;
 		this.state = newState;
 	}
 	
@@ -103,29 +106,44 @@ public class Belt extends Entity {
 			frame = (frame + 1) % 8;
 		}
 		// calculate frame
-		
 		queue.draw(leftFrames[frame%4], x, y, DEPTH);
 		for(int i=1; i<length-1; i++)
 			queue.draw(midFrames[frame%4], x+i*16, y, DEPTH);
 		queue.draw(rightFrames[frame%4], x+(length-1)*16, y, DEPTH);
-		if(state > 2) {
-			// endpoint circles
-			queue.draw(cwCircle, x+2, y+2, DEPTH);
-			queue.draw(cwCircle, x+(length-1)*16+6, y+2, DEPTH);
-			// scrolling arrows
-			for(int i=6+frame; i<(length-1)*16+frame; i+=8) {
-				queue.draw(cwArrow, x + i, y + 2, DEPTH);
-			}
-		} else if(state < 2) {
-			// endpoint circles
-			queue.draw(ccwCircle, x+2, y+2, DEPTH);
-			queue.draw(ccwCircle, x+(length-1)*16+6, y+2, DEPTH);
-			for(int i=(length-1)*16+frame; i>=6+frame; i-=8) {
-				queue.draw(ccwArrow, x + i, y + 2, DEPTH);
+		TextureRegion circle = null;
+		TextureRegion arrow = null;
+		
+		if(locked) {
+			circle = stopCircle;
+			if(state > 2) {
+				arrow = cwLockedArrow;
+			} else if(state < 2) {
+				arrow = ccwLockedArrow;
 			}
 		} else {
-			queue.draw(stopCircle, x+2, y+2, DEPTH);
-			queue.draw(stopCircle, x+(length-1)*16+6, y+2, DEPTH);
+			if(state > 2) {
+				circle = cwCircle;
+				arrow = cwArrow;
+			} else if(state < 2) {
+				circle = ccwCircle;
+				arrow = ccwArrow;
+			} else {
+				circle = stopCircle;
+			}
+		}
+
+		// endpoint circles
+		queue.draw(circle, x+2, y+2, DEPTH);
+		queue.draw(circle, x+(length-1)*16+6, y+2, DEPTH);
+		// scrolling arrows
+		if(arrow != null) {
+			for(int i=6+frame; i<(length-1)*16+frame; i+=8) {
+				queue.draw(arrow, x + i, y + 2, DEPTH);
+			}
+		}
+
+		if(locked) {
+			queue.draw(lock, x+(length-1)*8, y-5, DEPTH);
 		}
 	}
 

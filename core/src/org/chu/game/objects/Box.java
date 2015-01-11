@@ -7,7 +7,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -45,7 +44,6 @@ public class Box extends Entity {
 			fallLeft[i] = tmp[0][4+i];
 			fallRight[i] = tmp[1][4+i];
 		}
-		TextureRegion stand = tmp[0][4];
 		
 		fallingLeft = new Animation(0.065f, fallLeft);
 		fallingLeft.setPlayMode(Animation.PlayMode.LOOP);

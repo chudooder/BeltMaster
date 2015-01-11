@@ -21,6 +21,7 @@ public class BeltMaster extends Game {
 	
 	private OrthographicCamera camera;
 	private AssetManager assets;
+	private LevelLoader levelLoader;
 	
 	private float stateTime;
 	
@@ -44,6 +45,8 @@ public class BeltMaster extends Game {
 		Spawner.setupAnimations(assets);
 		ScorePopup.setupAnimations(assets);
 		
+		levelLoader = new LevelLoader(this);
+		
 		this.setScreen(new MainMenuScreen(this));
 	}
 	
@@ -66,5 +69,9 @@ public class BeltMaster extends Game {
 	
 	public float getStateTime() {
 		return stateTime;
+	}
+
+	public void loadLevel(int level) {
+		this.setScreen(levelLoader.loadLevel(level));
 	}
 }

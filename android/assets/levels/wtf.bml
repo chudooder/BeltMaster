@@ -1,0 +1,18 @@
+.nick Heart Attack
+.pool Rx10 Bx10 Gx10 Yx10
+.spawner 6 4.5 0 ????????????????????
+.spawner 18 4.5 2.25 ????????????????????
+.truck 3 R
+.truck 9 B
+.truck 15 G
+.truck 21 Y
+.belt 4 4 5 2 false
+.belt 16 4 5 2 false
+.belt 1 6 5 4 true
+.belt 7 6 11 2 false
+.belt 19 6 5 0 true
+.belt 4 8 7 2 false
+.belt 14 8 7 2 false
+.belt 7 10 5 2 false
+.belt 13 10 5 2 false
+.belt 10 12 5 2 false

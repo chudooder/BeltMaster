@@ -1,0 +1,11 @@
+# The levels definition file. Edit at your own risk!
+# Entire screen: 25 x 15
+# id <string>
+# nick <string>
+# pool <colors>
+# spawner <xpos> <colors>
+# belt <xpos> <ypos> <length> <init> <locked>
+# truck <xpos> <color>
+
+1-1
+wtf

@@ -47,10 +47,16 @@ public class GameScreen implements Screen {
 		
 		renderQueue = new RenderQueue();
 		
-		createBelt(68, 100, 7, new boolean[]{true, true, true, true, true}, 0);
-		createBelt(196, 100, 5, new boolean[]{true, true, true, true, true}, 0);
-		createBelt(84, 132, 3, new boolean[]{true, true, true, true, true}, 2);
-		createBelt(32, 68, 8, new boolean[]{true, true, true, true, true}, 4);
+//		debugSetup();
+		
+		Gdx.input.setInputProcessor(input);
+	}
+	
+	private void debugSetup() {
+		createBelt(68, 100, 7, 0, false);
+		createBelt(196, 100, 5, 0, false);
+		createBelt(84, 132, 3, 2, false);
+		createBelt(32, 68, 8, 4, true);
 		
 		createBox(108, 200, Box.GREEN);
 		
@@ -58,33 +64,31 @@ public class GameScreen implements Screen {
 		queue.add(Box.RED);
 		queue.add(Box.GREEN);
 		queue.add(Box.BLUE);
-		createSpawner(100, 240-32, queue, 3f);
+		createSpawner(100, queue, 3f, 0f);
 		
-		createTruck(8, 16, Box.RED);
-		
-		Gdx.input.setInputProcessor(input);
+		createTruck(8, Box.RED);
 	}
-	
-	private void createBelt(int x, int y, int length, boolean[] states, int initState) {
-		Belt b = new Belt(x, y, length, states, initState);
+
+	public void createBelt(int x, int y, int length, int initState, boolean locked) {
+		Belt b = new Belt(x, y, length, initState, locked);
 		addEntity(b);
 //		input.addProcessor(new BeltInputProcessor(b));
 		input.addProcessor(new GestureDetector(new BeltGestureProcessor(b)));
 	}
 	
-	private void createBox(int x, int y, Color c) {
+	public void createBox(int x, int y, Color c) {
 		Box b = new Box(x, y, c);
 		b.setScreen(this);
 		addEntity(b);
 	}
 	
-	private void createTruck(int x, int y, Color c) {
-		Truck t = new Truck(x, y, c);
+	public void createTruck(int x, Color c) {
+		Truck t = new Truck(x, 0, c);
 		addEntity(t);
 	}
 	
-	private void createSpawner(int x, int y, Queue<Color> colors, float spawnTime) {
-		Spawner s = new Spawner(x, y, colors, spawnTime);
+	public void createSpawner(int x, Queue<Color> colors, float spawnTime, float offset) {
+		Spawner s = new Spawner(x, 240-16, colors, spawnTime, offset);
 		s.setScreen(this);
 		addEntity(s);
 	}

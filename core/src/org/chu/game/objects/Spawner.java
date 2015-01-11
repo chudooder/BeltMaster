@@ -25,11 +25,11 @@ public class Spawner extends Entity {
 		sprite = new TextureRegion(sheet, 32, 96, 32, 32);
 	}
 
-	public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime) {
+	public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime, float offset) {
 		super(x, y);
 		this.spawnColors = spawnColors;
 		this.spawnTime = spawnTime;
-		this.spawnTimer = 0;
+		this.spawnTimer = offset;
 	}
 
 	@Override
