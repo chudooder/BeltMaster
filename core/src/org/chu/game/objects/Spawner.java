@@ -6,6 +6,7 @@ import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -19,10 +20,14 @@ public class Spawner extends Entity {
 	private Queue<Color> spawnColors;	// queue of blocks to spawn
 	
 	private static TextureRegion sprite;
+	private static Sound boxPop;
+	
+	private boolean soundPlayed;
 	
 	public static void setupAnimations(AssetManager assets) {
 		Texture sheet = assets.get("game-objects.png", Texture.class);
 		sprite = new TextureRegion(sheet, 32, 96, 32, 32);
+		boxPop = assets.get("audio/spawner.wav", Sound.class);
 	}
 
 	public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime, float offset) {
@@ -30,6 +35,7 @@ public class Spawner extends Entity {
 		this.spawnColors = spawnColors;
 		this.spawnTime = spawnTime;
 		this.spawnTimer = offset;
+		this.soundPlayed = false;
 	}
 
 	@Override
@@ -58,7 +64,12 @@ public class Spawner extends Entity {
 		float offsetY = 0;
 		if(spawnTimer > spawnTime - 0.5f && spawnTimer < spawnTime - 0.1f) {
 			offsetY = (spawnTimer + 0.5f - spawnTime) * 10;
+			soundPlayed = false;
 		} else if (spawnTimer >= spawnTime - 0.1f) {
+			if(!soundPlayed) {
+				boxPop.play();
+				soundPlayed = true;
+			}
 			offsetY = (spawnTime - spawnTimer) * 10;
 		}
 		queue.draw(sprite, x, y + offsetY, DEPTH);

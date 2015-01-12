@@ -9,6 +9,7 @@ import org.chu.game.objects.Truck;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -27,6 +28,8 @@ public class BeltMaster extends Game {
 	
 	@Override
 	public void create() {
+		
+		System.out.println(Gdx.graphics.getWidth() +" "+ Gdx.graphics.getHeight());
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 400, 240);
 		
@@ -52,6 +55,7 @@ public class BeltMaster extends Game {
 	
 	private void loadAssets() {
 		assets.load("game-objects.png", Texture.class);
+		assets.load("audio/spawner.wav", Sound.class);
 	}
 
 	@Override
