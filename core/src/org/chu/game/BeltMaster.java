@@ -2,6 +2,7 @@ package org.chu.game;
 
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
+import org.chu.game.objects.Recycler;
 import org.chu.game.objects.ScorePopup;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
@@ -46,6 +47,7 @@ public class BeltMaster extends Game {
 		Box.setupAnimations(assets);
 		Truck.setupAnimations(assets);
 		Spawner.setupAnimations(assets);
+		Recycler.setupAnimations(assets);
 		ScorePopup.setupAnimations(assets);
 		
 		levelLoader = new LevelLoader(this);
@@ -62,6 +64,7 @@ public class BeltMaster extends Game {
 	public void render() {
 		super.render();
 		stateTime += Gdx.graphics.getDeltaTime();
+		System.out.println(Gdx.graphics.getFramesPerSecond());
 	}
 	
 	@Override

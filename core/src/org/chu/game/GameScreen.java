@@ -9,6 +9,7 @@ import org.chu.game.input.BeltGestureProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Entity;
+import org.chu.game.objects.Recycler;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
 
@@ -26,6 +27,7 @@ public class GameScreen implements Screen {
 	private boolean isPaused;
 	private OrthographicCamera camera;
 	private List<Entity> entities;
+	private List<Spawner> spawners;
 	
 	private Queue<Entity> addQueue;
 	private Queue<Entity> removeQueue;
@@ -39,6 +41,7 @@ public class GameScreen implements Screen {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 400, 240);
 		entities = new ArrayList<Entity>();
+		spawners = new ArrayList<Spawner>();
 		
 		addQueue = new LinkedList<Entity>();
 		removeQueue = new LinkedList<Entity>();
@@ -78,7 +81,6 @@ public class GameScreen implements Screen {
 	
 	public void createBox(int x, int y, Color c) {
 		Box b = new Box(x, y, c);
-		b.setScreen(this);
 		addEntity(b);
 	}
 	
@@ -89,8 +91,13 @@ public class GameScreen implements Screen {
 	
 	public void createSpawner(int x, Queue<Color> colors, float spawnTime, float offset) {
 		Spawner s = new Spawner(x, 240-16, colors, spawnTime, offset);
-		s.setScreen(this);
+		spawners.add(s);
 		addEntity(s);
+	}
+
+	public void createRecycler(int x) {
+		Recycler r = new Recycler(x, 0);
+		addEntity(r);
 	}
 	
 	public void addEntity(Entity e) {
@@ -181,5 +188,11 @@ public class GameScreen implements Screen {
 	public List<Entity> getEntities() {
 		return entities;
 	}
+
+	public void recycle(Box box) {
+		Spawner spawner = spawners.get((int)(Math.random()*spawners.size()));
+		spawner.recycleBlock(box.getColor());
+	}
+
 
 }

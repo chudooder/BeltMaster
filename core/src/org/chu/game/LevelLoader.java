@@ -89,6 +89,11 @@ public class LevelLoader {
 				}
 				screen.createSpawner(x, queue, spawnTime, offset);
 			}
+			else if(line.startsWith(".recycler")) {
+				String[] parse = line.split(" ");
+				int x = Integer.parseInt(parse[1]) * 16 - 8;
+				screen.createRecycler(x);
+			}
 		}
 		in.close();
 		return screen;

@@ -1,0 +1,9 @@
+.nick Recycle
+.pool Rx5 Bx5
+.spawner 10 1 0 BRRBRBBRBR??????????
+.belt 9 5 5 3 false
+.belt 10 8 6 1 false
+.belt 9 11 3 1 false
+.recycler 8
+.truck 12 R
+.truck 16 B

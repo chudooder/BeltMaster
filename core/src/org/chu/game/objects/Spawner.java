@@ -40,7 +40,9 @@ public class Spawner extends Entity {
 
 	@Override
 	public void update() {
-		spawnTimer += Gdx.graphics.getDeltaTime();
+		if(!spawnColors.isEmpty()) {
+			spawnTimer += Gdx.graphics.getDeltaTime();
+		}
 		if(spawnTimer > spawnTime) {
 			// adjust timer
 			spawnTimer -= spawnTime;

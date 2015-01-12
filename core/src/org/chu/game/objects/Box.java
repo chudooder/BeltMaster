@@ -102,19 +102,7 @@ public class Box extends Entity {
 			
 			for(Entity e : screen.getEntities()) {
 				if(hitbox.overlaps(e.hitbox)) { 
-					if(e instanceof Belt) {
-						Belt b = (Belt)e;
-						this.belt = b;
-						// push up out of belt
-						this.y = belt.y + belt.hitbox.height - 4;
-						vy = 0;
-						// set to the appropriate state
-						state = BoxState.STANDING;
-					} else if(e instanceof Truck) {
-						Truck t = (Truck) e;
-						screen.addEntity(new ScorePopup(t.x, t.y+32, t.getColor().equals(color)));
-						screen.removeEntity(this);
-					}
+					collide(e);
 				}
 			}
 		}
@@ -128,10 +116,34 @@ public class Box extends Entity {
 		}
 	}
 
+	private void collide(Entity e) {
+		if(e instanceof Belt) {
+			Belt b = (Belt)e;
+			this.belt = b;
+			// push up out of belt
+			this.y = belt.y + belt.hitbox.height - 4;
+			vy = 0;
+			// set to the appropriate state
+			state = BoxState.STANDING;
+		} else if(e instanceof Truck) {
+			Truck t = (Truck) e;
+			screen.addEntity(new ScorePopup(t.x, t.y+32, t.getColor().equals(color)));
+			screen.removeEntity(this);
+		} else if(e instanceof Recycler) {
+			screen.recycle(this);
+			screen.removeEntity(this);
+		}
+	}
+
 	@Override
 	public void render(float time, RenderQueue queue) {
 		queue.draw(currentAnim.getKeyFrame(timer), x, y, DEPTH, color);
 	}
+
+	public Color getColor() {
+		return color;
+	}
+
 	
 	private enum BoxState {
 		STANDING,
@@ -139,5 +151,4 @@ public class Box extends Entity {
 		FALLING_RIGHT,
 		FREE_FALLING
 	}
-
 }
