@@ -3,9 +3,9 @@ package org.chu.game.objects;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.chu.game.BeltMaster;
 import org.chu.game.RenderQueue;
 
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -17,35 +17,31 @@ public class Truck extends Entity {
 	private static final float BACK_DEPTH = 0.5f;
 	
 	private static Map<Color, TextureRegion> fronts;
-	private static Map<Color, TextureRegion> boxes;
 	private static TextureRegion wheels;
 	private static TextureRegion back;
 	
 	private Color color;
 	
-	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("game-objects.png", Texture.class);
+	public static void setupAnimations(BeltMaster beltMaster) {
+		Texture sheet = beltMaster.getTexture("game-objects");
 		fronts = new HashMap<Color, TextureRegion>();
-		boxes = new HashMap<Color, TextureRegion>();
+
+		TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth()/4, sheet.getHeight()/2);
 		
-		fronts.put(Box.RED, new TextureRegion(sheet, 0, 32, 32, 32));
-		fronts.put(Box.GREEN, new TextureRegion(sheet, 32, 32, 32, 32));
-		fronts.put(Box.BLUE, new TextureRegion(sheet, 64, 32, 32, 32));
-		fronts.put(Box.YELLOW, new TextureRegion(sheet, 96, 32, 32, 32));
+		fronts.put(Box.RED, tmp[0][0]);
+		fronts.put(Box.GREEN, tmp[0][1]);
+		fronts.put(Box.BLUE, tmp[0][2]);
+		fronts.put(Box.YELLOW, tmp[0][3]);
 		
-		boxes.put(Box.RED, new TextureRegion(sheet, 0, 0, 8, 8));
-		boxes.put(Box.GREEN, new TextureRegion(sheet, 8, 0, 8, 8));
-		boxes.put(Box.BLUE, new TextureRegion(sheet, 0, 8, 8, 8));
-		boxes.put(Box.YELLOW, new TextureRegion(sheet, 8, 8, 8, 8));
-		
-		wheels = new TextureRegion(sheet, 32, 8, 32, 8);
-		back = new TextureRegion(sheet, 32, 16, 32, 16);
+		wheels = new TextureRegion(sheet, sheet.getWidth()/4, 
+				sheet.getHeight()/8*7, sheet.getWidth()/4, sheet.getHeight()/8);
+		back = new TextureRegion(sheet, 0, sheet.getHeight()/4*2, sheet.getWidth()/4, sheet.getHeight()/4);
 	}
 	
 	public Truck(int x, int y, Color color) {
 		super(x, y);
 		this.color = color;
-		hitbox = new Rectangle(x, y, 32, 8);
+		hitbox = new Rectangle(x, y, 64, 16);
 	}
 
 	@Override
@@ -57,7 +53,7 @@ public class Truck extends Entity {
 	public void render(float time, RenderQueue queue) {
 		queue.draw(wheels, x, y, FRONT_DEPTH);
 		queue.draw(fronts.get(color), x, y, FRONT_DEPTH);
-		queue.draw(back, x, y+32, BACK_DEPTH);
+		queue.draw(back, x, y+64, BACK_DEPTH);
 	}
 
 	public Color getColor() {

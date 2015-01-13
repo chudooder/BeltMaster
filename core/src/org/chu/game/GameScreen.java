@@ -20,11 +20,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
 	
 	private BeltMaster game;
 	private boolean isPaused;
+	private Viewport viewport;
 	private OrthographicCamera camera;
 	private List<Entity> entities;
 	private List<Spawner> spawners;
@@ -38,8 +42,12 @@ public class GameScreen implements Screen {
 	
 	public GameScreen(BeltMaster game) {
 		this.game = game;
+		
+
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 400, 240);
+		camera.setToOrtho(false, 800*game.getScale(), 450*game.getScale());
+		viewport = new ExtendViewport(800*game.getScale(), 450*game.getScale(), camera);
+		
 		entities = new ArrayList<Entity>();
 		spawners = new ArrayList<Spawner>();
 		
@@ -48,7 +56,7 @@ public class GameScreen implements Screen {
 		
 		input = new InputMultiplexer();
 		
-		renderQueue = new RenderQueue();
+		renderQueue = new RenderQueue(game.getScale());
 		
 //		debugSetup();
 		
@@ -90,7 +98,7 @@ public class GameScreen implements Screen {
 	}
 	
 	public void createSpawner(int x, Queue<Color> colors, float spawnTime, float offset) {
-		Spawner s = new Spawner(x, 240-16, colors, spawnTime, offset);
+		Spawner s = new Spawner(x, 32*13, colors, spawnTime, offset);
 		spawners.add(s);
 		addEntity(s);
 	}
@@ -115,7 +123,8 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		camera.update();
-		game.batch.setProjectionMatrix(camera.combined);
+		game.batch.setProjectionMatrix(camera.projection);
+		game.batch.setTransformMatrix(camera.view);
 
 		// get render calls
 		for(Entity e : entities) {
@@ -149,6 +158,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		System.out.println(width);
+		viewport.update(width, height);
 		return;
 	}
 

@@ -56,8 +56,8 @@ public class LevelLoader {
 			}
 			else if(line.startsWith(".belt")) {
 				String[] parse = line.split(" ");
-				int x = Integer.parseInt(parse[1]) * 16;
-				int y = (15-Integer.parseInt(parse[2])) * 16;
+				int x = Integer.parseInt(parse[1]) * 32;
+				int y = (15-Integer.parseInt(parse[2])) * 32;
 				int length = Integer.parseInt(parse[3]);
 				int init = Integer.parseInt(parse[4]);
 				boolean locked = Boolean.parseBoolean(parse[5]);
@@ -65,13 +65,13 @@ public class LevelLoader {
 			}
 			else if(line.startsWith(".truck")) {
 				String[] parse = line.split(" ");
-				int x = Integer.parseInt(parse[1]) * 16 - 8;
+				int x = Integer.parseInt(parse[1]) * 32 - 16;
 				Color color = getColor(parse[2]);
 				screen.createTruck(x, color);
 			}
 			else if(line.startsWith(".spawner")) {
 				String[] parse = line.split(" ");
-				int x = Integer.parseInt(parse[1]) * 16 - 8;
+				int x = Integer.parseInt(parse[1]) * 32 - 16;
 				float spawnTime = Float.parseFloat(parse[2]);
 				float offset = Float.parseFloat(parse[3]);
 				Queue<Color> queue = new LinkedList<Color>();
@@ -91,7 +91,7 @@ public class LevelLoader {
 			}
 			else if(line.startsWith(".recycler")) {
 				String[] parse = line.split(" ");
-				int x = Integer.parseInt(parse[1]) * 16 - 8;
+				int x = Integer.parseInt(parse[1]) * 32 - 16;
 				screen.createRecycler(x);
 			}
 		}

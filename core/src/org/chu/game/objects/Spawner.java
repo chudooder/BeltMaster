@@ -2,10 +2,10 @@ package org.chu.game.objects;
 
 import java.util.Queue;
 
+import org.chu.game.BeltMaster;
 import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,10 +24,11 @@ public class Spawner extends Entity {
 	
 	private boolean soundPlayed;
 	
-	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("game-objects.png", Texture.class);
-		sprite = new TextureRegion(sheet, 32, 96, 32, 32);
-		boxPop = assets.get("audio/spawner.wav", Sound.class);
+	public static void setupAnimations(BeltMaster beltMaster) {
+		Texture sheet = beltMaster.getTexture("game-objects");
+		sprite = new TextureRegion(sheet, sheet.getWidth()/4*3, 
+				sheet.getHeight()/2, sheet.getWidth()/4, sheet.getHeight()/2);
+		boxPop = beltMaster.getSound("spawner");
 	}
 
 	public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime, float offset) {
@@ -50,7 +51,7 @@ public class Spawner extends Entity {
 			if(!spawnColors.isEmpty()) {
 				Color color = spawnColors.poll();
 				if(color != null) {
-					Box box = new Box(x + 8, y + 0, color);
+					Box box = new Box(x + 16, y + 0, color);
 					screen.addEntity(box);
 				}
 			}

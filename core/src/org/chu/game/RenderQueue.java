@@ -15,9 +15,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 public class RenderQueue {
 	
 	private PriorityQueue<RenderCall> queue;
+	private int scale;
 	
-	public RenderQueue() {
+	public RenderQueue(int scale) {
 		queue = new PriorityQueue<RenderCall>();
+		this.scale = scale;
 	}
 	
 	public void draw(TextureRegion region, float x, float y, float z) {
@@ -25,7 +27,7 @@ public class RenderQueue {
 	}
 	
 	public void draw(TextureRegion region, float x, float y, float z, Color c) {
-		queue.add(new RenderCall(region, x, y, z, c));
+		queue.add(new RenderCall(region, x*scale, y*scale, z, c));
 	}
 	
 	public void execute(SpriteBatch batch) {

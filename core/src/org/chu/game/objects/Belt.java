@@ -1,9 +1,10 @@
 package org.chu.game.objects;
 
+import org.chu.game.BeltMaster;
 import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,7 +13,7 @@ public class Belt extends Entity {
 	
 	// physics constants
 	private static final float SLOW_SPEED = (1.0f/30.0f);
-	private static final int FALL_POINT = 5;
+	private static final int FALL_POINT = 7;
 	
 	// render depth
 	private static final float DEPTH = 0.1f;
@@ -30,6 +31,8 @@ public class Belt extends Entity {
 	private static TextureRegion stopCircle;
 	private static TextureRegion lock;
 	
+	private static Sound click;
+	
 	private int length;
 	private Rectangle touchRegion;
 	private int state;
@@ -38,27 +41,31 @@ public class Belt extends Entity {
 	private float timer;
 	private int frame;
 
-	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("game-objects.png", Texture.class);
+	public static void setupAnimations(BeltMaster game) {
+		Texture sheet = game.getTexture("belt-sheet");
 		TextureRegion[][] tmp = TextureRegion.split(sheet, 
-				sheet.getWidth()/8, sheet.getHeight()/8);
+				sheet.getWidth()/4, sheet.getHeight()/4);
 		leftFrames = new TextureRegion[4];
 		midFrames = new TextureRegion[4];
 		rightFrames = new TextureRegion[4];
 		for(int i=0; i<4; i++) {
-			leftFrames[i] = tmp[4][4+i];
-			midFrames[i] = tmp[5][4+i];
-			rightFrames[i] = tmp[6][4+i];
+			leftFrames[i] = tmp[0][i];
+			midFrames[i] = tmp[1][i];
+			rightFrames[i] = tmp[2][i];
 		}
+		lock = tmp[3][2];
 		
-		cwCircle = new TextureRegion(sheet, 64, 112, 8, 8);
-		cwArrow = new TextureRegion(sheet, 72, 112, 8, 8);
-		ccwCircle = new TextureRegion(sheet, 64, 120, 8, 8);
-		ccwArrow = new TextureRegion(sheet, 72, 120, 8, 8);
-		stopCircle = new TextureRegion(sheet, 80, 112, 8, 8);
-		cwLockedArrow = new TextureRegion(sheet, 88, 112, 8, 8);
-		ccwLockedArrow = new TextureRegion(sheet, 88, 120, 8, 8);
-		lock = new TextureRegion(sheet, 96, 112, 16, 16);
+		TextureRegion[][] tmp2 = TextureRegion.split(sheet, 
+				sheet.getWidth()/8, sheet.getHeight()/8);
+		cwCircle = tmp2[6][0];
+		cwArrow = tmp2[6][1];
+		ccwCircle = tmp2[7][0];
+		ccwArrow = tmp2[7][1];
+		stopCircle = tmp2[6][2];
+		cwLockedArrow = tmp2[6][3];
+		ccwLockedArrow = tmp2[7][3];
+		
+		click = game.getSound("conveyor-click");
 	}
 	
 	public Belt(int x, int y, int length, int initialState, boolean locked) {
@@ -72,8 +79,8 @@ public class Belt extends Entity {
 		this.timer = 0;
 		
 		// create hitboxes
-		hitbox = new Rectangle(x+FALL_POINT, y, length*16-FALL_POINT*2, 12);
-		touchRegion = new Rectangle(x-8, y-8, length*16 + 16, 16 + 16);
+		hitbox = new Rectangle(x+FALL_POINT, y, length*32-FALL_POINT*4, 24);
+		touchRegion = new Rectangle(x-16, y-16, length*32 + 32, 64);
 	}
 	
 	public void setState(int newState) {
@@ -83,6 +90,7 @@ public class Belt extends Entity {
 			return;
 		}
 		this.state = newState;
+		click.play();
 	}
 	
 	public int getState() {
@@ -108,8 +116,8 @@ public class Belt extends Entity {
 		// calculate frame
 		queue.draw(leftFrames[frame%4], x, y, DEPTH);
 		for(int i=1; i<length-1; i++)
-			queue.draw(midFrames[frame%4], x+i*16, y, DEPTH);
-		queue.draw(rightFrames[frame%4], x+(length-1)*16, y, DEPTH);
+			queue.draw(midFrames[frame%4], x+i*32, y, DEPTH);
+		queue.draw(rightFrames[frame%4], x+(length-1)*32, y, DEPTH);
 		TextureRegion circle = null;
 		TextureRegion arrow = null;
 		
@@ -133,17 +141,17 @@ public class Belt extends Entity {
 		}
 
 		// endpoint circles
-		queue.draw(circle, x+2, y+2, DEPTH);
-		queue.draw(circle, x+(length-1)*16+6, y+2, DEPTH);
+		queue.draw(circle, x+4, y+4, DEPTH);
+		queue.draw(circle, x+(length-1)*32+12, y+4, DEPTH);
 		// scrolling arrows
 		if(arrow != null) {
-			for(int i=6+frame; i<(length-1)*16+frame; i+=8) {
-				queue.draw(arrow, x + i, y + 2, DEPTH);
+			for(int i=12+frame*2; i<(length-1)*32+frame*2; i+=16) {
+				queue.draw(arrow, x + i, y + 4, DEPTH);
 			}
 		}
 
 		if(locked) {
-			queue.draw(lock, x+(length-1)*8, y-5, DEPTH);
+			queue.draw(lock, x+(length-1)*16, y-10, DEPTH);
 		}
 	}
 

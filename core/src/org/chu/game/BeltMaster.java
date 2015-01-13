@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class BeltMaster extends Game {
 	
+	private static int SCALE = 2;
 	public SpriteBatch batch;
 	public BitmapFont font;
 	
@@ -29,10 +30,16 @@ public class BeltMaster extends Game {
 	
 	@Override
 	public void create() {
-		
 		System.out.println(Gdx.graphics.getWidth() +" "+ Gdx.graphics.getHeight());
+		// figure out what graphics scale we need
+		if(Gdx.graphics.getWidth() > 800) {
+			SCALE = 2;
+		} else {
+			SCALE = 1;
+		}
+		
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 400, 240);
+		camera.setToOrtho(false, 800*SCALE, 450*SCALE);
 		
 		batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -43,12 +50,12 @@ public class BeltMaster extends Game {
 		while(!assets.update());
 
 		// setup animations
-		Belt.setupAnimations(assets);
-		Box.setupAnimations(assets);
-		Truck.setupAnimations(assets);
-		Spawner.setupAnimations(assets);
-		Recycler.setupAnimations(assets);
-		ScorePopup.setupAnimations(assets);
+		Belt.setupAnimations(this);
+		Box.setupAnimations(this);
+		Truck.setupAnimations(this);
+		Spawner.setupAnimations(this);
+		Recycler.setupAnimations(this);
+		ScorePopup.setupAnimations(this);
 		
 		levelLoader = new LevelLoader(this);
 		
@@ -56,15 +63,23 @@ public class BeltMaster extends Game {
 	}
 	
 	private void loadAssets() {
-		assets.load("game-objects.png", Texture.class);
+		String suffix = SCALE == 2 ? "@2x" : "";
+		assets.load("box-sheet"+suffix+".png", Texture.class);
+		assets.load("belt-sheet"+suffix+".png", Texture.class);
+		assets.load("game-objects"+suffix+".png", Texture.class);
 		assets.load("audio/spawner.wav", Sound.class);
+		assets.load("audio/box-fall-1.wav", Sound.class);
+		assets.load("audio/box-fall-2.wav", Sound.class);
+		assets.load("audio/box-fall-3.wav", Sound.class);
+		assets.load("audio/conveyor-click.wav", Sound.class);
+		assets.load("audio/miss.wav", Sound.class);
+		assets.load("audio/score.wav", Sound.class);
 	}
 
 	@Override
 	public void render() {
 		super.render();
 		stateTime += Gdx.graphics.getDeltaTime();
-		System.out.println(Gdx.graphics.getFramesPerSecond());
 	}
 	
 	@Override
@@ -77,8 +92,22 @@ public class BeltMaster extends Game {
 	public float getStateTime() {
 		return stateTime;
 	}
+	
+	public int getScale() {
+		return SCALE;
+	}
 
 	public void loadLevel(int level) {
 		this.setScreen(levelLoader.loadLevel(level));
+	}
+
+	public Texture getTexture(String string) {
+		String suffix = SCALE == 2 ? "@2x" : "";
+		return assets.get(string+suffix+".png", Texture.class);
+	}
+
+	public Sound getSound(String string) {
+		return assets.get("audio/"+string+".wav", Sound.class);
+		
 	}
 }

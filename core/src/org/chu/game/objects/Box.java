@@ -1,9 +1,12 @@
 package org.chu.game.objects;
 
+import java.util.List;
+
+import org.chu.game.BeltMaster;
 import org.chu.game.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -12,8 +15,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Box extends Entity {
 	
-	private static final float GRAVITY = 200.0f;
-	private static final float SPEED = 30.0f;
+	private static final float GRAVITY = 400.0f;
+	private static final float SPEED = 60.0f;
 	private static final float DEPTH = 0f;
 	
 	public static final Color RED = new Color(1f, 0f, 0f, 1f);
@@ -23,6 +26,8 @@ public class Box extends Entity {
 	
 	private static Animation fallingLeft;
 	private static Animation fallingRight;
+	
+	private static Sound[] fallSounds;
 
 	private Color color;
 	private Belt belt;
@@ -34,27 +39,32 @@ public class Box extends Entity {
 	private float timer;
 	private Animation currentAnim;
 	
-	public static void setupAnimations(AssetManager assets) {
-		Texture sheet = assets.get("game-objects.png", Texture.class);
+	public static void setupAnimations(BeltMaster beltMaster) {
+		Texture sheet = beltMaster.getTexture("box-sheet");
 		TextureRegion[][] tmp = TextureRegion.split(sheet, 
-				sheet.getWidth()/8, sheet.getHeight()/8);
+				sheet.getWidth()/4, sheet.getHeight()/2);
 		TextureRegion[] fallLeft = new TextureRegion[4];
 		TextureRegion[] fallRight = new TextureRegion[4];
 		for(int i=0; i<4; i++) {
-			fallLeft[i] = tmp[0][4+i];
-			fallRight[i] = tmp[1][4+i];
+			fallLeft[i] = tmp[0][i];
+			fallRight[i] = tmp[1][i];
 		}
 		
-		fallingLeft = new Animation(0.065f, fallLeft);
+		fallingLeft = new Animation(0.08f, fallLeft);
 		fallingLeft.setPlayMode(Animation.PlayMode.LOOP);
-		fallingRight = new Animation(0.065f, fallRight);
+		fallingRight = new Animation(0.08f, fallRight);
 		fallingRight.setPlayMode(Animation.PlayMode.LOOP);
+		
+		fallSounds = new Sound[3];
+		fallSounds[0] = beltMaster.getSound("box-fall-1");
+		fallSounds[1] = beltMaster.getSound("box-fall-2");
+		fallSounds[2] = beltMaster.getSound("box-fall-3");
 	}
 	
 	public Box(float x, float y, Color color) {
 		super(x, y);
 		this.color = color;
-		this.hitbox = new Rectangle(x + 4, y + 4, 10, 10);
+		this.hitbox = new Rectangle(x + 6, y + 6, 20, 20);
 		
 		state = BoxState.FREE_FALLING;
 		currentAnim = fallingLeft;
@@ -108,7 +118,7 @@ public class Box extends Entity {
 		}
 		
 		// update hitbox position
-		hitbox.setPosition(x+4, y+4);
+		hitbox.setPosition(x+6, y+6);
 		
 		// destroy box if out of bounds
 		if(y < -32) {
@@ -125,9 +135,12 @@ public class Box extends Entity {
 			vy = 0;
 			// set to the appropriate state
 			state = BoxState.STANDING;
+			// play sound
+//			Sound sound = fallSounds[(int)(Math.random()*fallSounds.length)];
+//			sound.play();
 		} else if(e instanceof Truck) {
 			Truck t = (Truck) e;
-			screen.addEntity(new ScorePopup(t.x, t.y+32, t.getColor().equals(color)));
+			screen.addEntity(new ScorePopup(t.x, t.y+64, t.getColor().equals(color)));
 			screen.removeEntity(this);
 		} else if(e instanceof Recycler) {
 			screen.recycle(this);
