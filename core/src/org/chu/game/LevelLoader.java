@@ -99,6 +99,10 @@ public class LevelLoader {
 		return screen;
 	}
 	
+	public List<String> getLevelNames() {
+		return levels;
+	}
+	
 	private Color getColor(String col) {
 		if(col.equals("R")) return Box.RED;
 		if(col.equals("B")) return Box.BLUE;

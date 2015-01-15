@@ -2,7 +2,7 @@
 .pool Rx5 Bx5
 .spawner 12 4 2 ??????????
 .belt 9 7 7 3 false
-.belt 7 5 3 4 true
-.belt 15 5 3 0 true
+.belt 7 9 3 4 true
+.belt 15 9 3 0 true
 .truck 10 R
 .truck 14 B

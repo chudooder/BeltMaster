@@ -11,6 +11,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -24,7 +25,6 @@ public class BeltMaster extends Game {
 	
 	private OrthographicCamera camera;
 	private AssetManager assets;
-	private LevelLoader levelLoader;
 	
 	private float stateTime;
 	
@@ -42,7 +42,6 @@ public class BeltMaster extends Game {
 		camera.setToOrtho(false, 800*SCALE, 450*SCALE);
 		
 		batch = new SpriteBatch();
-		font = new BitmapFont();
 		assets = new AssetManager();
 		
 		loadAssets();
@@ -56,8 +55,7 @@ public class BeltMaster extends Game {
 		Spawner.setupAnimations(this);
 		Recycler.setupAnimations(this);
 		ScorePopup.setupAnimations(this);
-		
-		levelLoader = new LevelLoader(this);
+		SelectButton.setupAnimations(this);
 		
 		this.setScreen(new MainMenuScreen(this));
 	}
@@ -67,6 +65,8 @@ public class BeltMaster extends Game {
 		assets.load("box-sheet"+suffix+".png", Texture.class);
 		assets.load("belt-sheet"+suffix+".png", Texture.class);
 		assets.load("game-objects"+suffix+".png", Texture.class);
+		assets.load("select-box"+suffix+".png", Texture.class);
+		assets.load("select-box-down"+suffix+".png", Texture.class);
 		assets.load("audio/spawner.wav", Sound.class);
 		assets.load("audio/box-fall-1.wav", Sound.class);
 		assets.load("audio/box-fall-2.wav", Sound.class);
@@ -74,6 +74,7 @@ public class BeltMaster extends Game {
 		assets.load("audio/conveyor-click.wav", Sound.class);
 		assets.load("audio/miss.wav", Sound.class);
 		assets.load("audio/score.wav", Sound.class);
+		assets.load("fonts/vcr-osd-mono.fnt", BitmapFont.class);
 	}
 
 	@Override
@@ -85,7 +86,6 @@ public class BeltMaster extends Game {
 	@Override
 	public void dispose() {
 		batch.dispose();
-		font.dispose();
 		assets.clear();
 	}
 	
@@ -97,10 +97,6 @@ public class BeltMaster extends Game {
 		return SCALE;
 	}
 
-	public void loadLevel(int level) {
-		this.setScreen(levelLoader.loadLevel(level));
-	}
-
 	public Texture getTexture(String string) {
 		String suffix = SCALE == 2 ? "@2x" : "";
 		return assets.get(string+suffix+".png", Texture.class);
@@ -109,5 +105,10 @@ public class BeltMaster extends Game {
 	public Sound getSound(String string) {
 		return assets.get("audio/"+string+".wav", Sound.class);
 		
+	}
+
+	public BitmapFont getFont(String string) {
+		String suffix = SCALE == 2 ? "@2x" : "";
+		return assets.get("fonts/"+string+suffix+".fnt", BitmapFont.class);
 	}
 }
