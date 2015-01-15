@@ -67,6 +67,7 @@ public class BeltMaster extends Game {
 		assets.load("game-objects"+suffix+".png", Texture.class);
 		assets.load("select-box"+suffix+".png", Texture.class);
 		assets.load("select-box-down"+suffix+".png", Texture.class);
+		assets.load("fonts/vcr-osd-mono"+suffix+".fnt", BitmapFont.class);
 		assets.load("audio/spawner.wav", Sound.class);
 		assets.load("audio/box-fall-1.wav", Sound.class);
 		assets.load("audio/box-fall-2.wav", Sound.class);
@@ -74,7 +75,6 @@ public class BeltMaster extends Game {
 		assets.load("audio/conveyor-click.wav", Sound.class);
 		assets.load("audio/miss.wav", Sound.class);
 		assets.load("audio/score.wav", Sound.class);
-		assets.load("fonts/vcr-osd-mono.fnt", BitmapFont.class);
 	}
 
 	@Override

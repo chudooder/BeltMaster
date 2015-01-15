@@ -84,7 +84,7 @@ public class GameScreen implements Screen {
 		Belt b = new Belt(x, y, length, initState, locked);
 		addEntity(b);
 //		input.addProcessor(new BeltInputProcessor(b));
-		input.addProcessor(new GestureDetector(new BeltGestureProcessor(b)));
+		input.addProcessor(new GestureDetector(new BeltGestureProcessor(b, viewport)));
 	}
 	
 	public void createBox(int x, int y, Color c) {

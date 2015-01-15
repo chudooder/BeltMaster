@@ -6,22 +6,26 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class BeltGestureProcessor implements GestureListener {
 	
 	private Belt belt;
 	private Rectangle box;
 	private boolean isSelected;
+	private Viewport viewport;
 	
-	public BeltGestureProcessor(Belt b) {
+	public BeltGestureProcessor(Belt b, Viewport viewport) {
 		this.belt = b;
 		this.box = belt.getTouchRegion();
+		this.viewport = viewport;
 	}
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
-		x = x * 800 / Gdx.graphics.getWidth();
-		y = (Gdx.graphics.getHeight() - y) * 450 / Gdx.graphics.getHeight();
+		x = x * 800 / viewport.getScreenWidth();
+		y = (viewport.getScreenHeight() - y) * viewport.getWorldHeight() / viewport.getScreenHeight()
+				- (viewport.getScreenHeight() - 450) / 2;
 		if(x < box.x || x > box.x + box.width 
 				|| y < box.y || y > box.y + box.height)
 			return false;
@@ -76,7 +80,6 @@ public class BeltGestureProcessor implements GestureListener {
 
 	@Override
 	public boolean zoom(float initialDistance, float distance) {
-		System.out.println("Zoom");
 		isSelected = false;
 		return false;
 	}
@@ -84,7 +87,6 @@ public class BeltGestureProcessor implements GestureListener {
 	@Override
 	public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2,
 			Vector2 pointer1, Vector2 pointer2) {
-		System.out.println("Pinch");
 		isSelected = false;
 		return false;
 	}

@@ -81,6 +81,8 @@ public class Belt extends Entity {
 		// create hitboxes
 		hitbox = new Rectangle(x+FALL_POINT, y, length*32-FALL_POINT*4, 24);
 		touchRegion = new Rectangle(x-16, y-16, length*32 + 32, 64);
+//		touchRegion = new Rectangle(x, y, length*32, 32);
+
 	}
 	
 	public void setState(int newState) {
@@ -104,16 +106,8 @@ public class Belt extends Entity {
 	@Override
 	public void render(float time, RenderQueue queue) {
 		timer += Gdx.graphics.getDeltaTime() * (state - 2);
-		// clamp timer to [0,1)
-		if(timer < 0) {
-			timer += SLOW_SPEED;
-			frame = (frame - 1 + 8) % 8;
-		}
-		if(timer > SLOW_SPEED) {
-			timer -= SLOW_SPEED;
-			frame = (frame + 1) % 8;
-		}
-		// calculate frame
+		frame = (int)(timer / SLOW_SPEED % 8);
+		if(frame < 0) frame += 8;
 		queue.draw(leftFrames[frame%4], x, y, DEPTH);
 		for(int i=1; i<length-1; i++)
 			queue.draw(midFrames[frame%4], x+i*32, y, DEPTH);
