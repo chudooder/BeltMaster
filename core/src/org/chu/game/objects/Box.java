@@ -142,6 +142,7 @@ public class Box extends Entity {
 			Truck t = (Truck) e;
 			screen.addEntity(new ScorePopup(t.x, t.y+64, t.getColor().equals(color)));
 			screen.removeEntity(this);
+			t.startBounce();
 		} else if(e instanceof Recycler) {
 			screen.recycle(this);
 			screen.removeEntity(this);

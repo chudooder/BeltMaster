@@ -6,6 +6,7 @@ import java.util.Map;
 import org.chu.game.BeltMaster;
 import org.chu.game.RenderQueue;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -21,6 +22,8 @@ public class Truck extends Entity {
 	private static TextureRegion back;
 	
 	private Color color;
+	private float bounceTimer = -1;
+	private float bounceOffset = 0;
 	
 	public static void setupAnimations(BeltMaster beltMaster) {
 		Texture sheet = beltMaster.getTexture("game-objects");
@@ -46,18 +49,29 @@ public class Truck extends Entity {
 
 	@Override
 	public void update() {
-		
+		if(bounceTimer >= 0) {
+			bounceTimer += Gdx.graphics.getDeltaTime();
+			bounceOffset = (float) (3 * Math.sin(bounceTimer * 2 * Math.PI));
+			if(bounceTimer > 0.5f) {
+				bounceTimer = -1;
+				bounceOffset = 0;
+			}
+		}
 	}
 
 	@Override
 	public void render(float time, RenderQueue queue) {
 		queue.draw(wheels, x, y, FRONT_DEPTH);
-		queue.draw(fronts.get(color), x, y, FRONT_DEPTH);
-		queue.draw(back, x, y+64, BACK_DEPTH);
+		queue.draw(fronts.get(color), x, y - bounceOffset, FRONT_DEPTH);
+		queue.draw(back, x, y+64 - bounceOffset, BACK_DEPTH);
 	}
 
 	public Color getColor() {
 		return color;
+	}
+	
+	public void startBounce() {
+		bounceTimer = 0;
 	}
 
 }
