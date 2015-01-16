@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class BeltGestureProcessor implements GestureListener {
@@ -14,18 +15,20 @@ public class BeltGestureProcessor implements GestureListener {
 	private Rectangle box;
 	private boolean isSelected;
 	private Viewport viewport;
+	private int scale;
 	
-	public BeltGestureProcessor(Belt b, Viewport viewport) {
+	public BeltGestureProcessor(Belt b, Viewport viewport, int scale) {
 		this.belt = b;
 		this.box = belt.getTouchRegion();
 		this.viewport = viewport;
+		this.scale = scale;
 	}
 
 	@Override
 	public boolean touchDown(float x, float y, int pointer, int button) {
-		x = x * 800 / viewport.getScreenWidth();
-		y = (viewport.getScreenHeight() - y) * viewport.getWorldHeight() / viewport.getScreenHeight()
-				- (viewport.getScreenHeight() - 450) / 2;
+		Vector3 xy = viewport.getCamera().unproject(new Vector3(x, y, 0));
+		x = xy.x / scale;
+		y = xy.y / scale;
 		if(x < box.x || x > box.x + box.width 
 				|| y < box.y || y > box.y + box.height)
 			return false;

@@ -23,7 +23,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
@@ -96,7 +95,7 @@ public class GameScreen implements Screen {
 		Belt b = new Belt(x, y, length, initState, locked);
 		addEntity(b);
 //		input.addProcessor(new BeltInputProcessor(b));
-		input.addProcessor(new GestureDetector(new BeltGestureProcessor(b, viewport)));
+		input.addProcessor(new GestureDetector(new BeltGestureProcessor(b, viewport, game.getScale())));
 	}
 	
 	public void createBox(int x, int y, Color c) {
