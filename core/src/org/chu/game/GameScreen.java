@@ -221,5 +221,9 @@ public class GameScreen implements Screen {
 		
 	}
 
+	public Viewport getViewport() {
+		return viewport;
+	}
+
 
 }

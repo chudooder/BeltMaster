@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 
 public class ScoreHUD extends Entity {
 	
@@ -79,13 +80,14 @@ public class ScoreHUD extends Entity {
 	@Override
 	public void render(float time, RenderQueue queue) {
 		float oX = 800 - 138;
-		float oY = 0;
+		float oY = screen.getViewport().getCamera().unproject(new Vector3(0, 0, 0)).y 
+				/ screen.getGame().getScale() - 26;
 		float barWidth = 128.0f / maxScore;
 		float scoreWidth = score * barWidth;
 		float missX = oX + (maxScore - maxMiss) * barWidth;
 		float missWidth = (maxMiss - miss) * barWidth;
 		float width = 128.0f - miss * barWidth;
-		float height = fillTex.getRegionHeight();
+		float height = 16f;
 		
 		queue.draw(fillTex, oX-1, oY-1, DEPTH, Color.BLACK, width+2, height+2);
 //		queue.draw(fillTex, oX + scoreWidth, oY, DEPTH, 
