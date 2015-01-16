@@ -10,8 +10,10 @@ import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Entity;
 import org.chu.game.objects.Recycler;
+import org.chu.game.objects.ScoreHUD;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
+import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -33,11 +35,12 @@ public class GameScreen implements Screen {
 	private List<Entity> entities;
 	private List<Spawner> spawners;
 	
+	private ScoreHUD scoreHUD;
+	
 	private Queue<Entity> addQueue;
 	private Queue<Entity> removeQueue;
 	
 	private InputMultiplexer input;
-	
 	private RenderQueue renderQueue;
 	
 	public GameScreen(BeltMaster game) {
@@ -50,6 +53,7 @@ public class GameScreen implements Screen {
 		
 		entities = new ArrayList<Entity>();
 		spawners = new ArrayList<Spawner>();
+		scoreHUD = new ScoreHUD();
 		
 		addQueue = new LinkedList<Entity>();
 		removeQueue = new LinkedList<Entity>();
@@ -59,7 +63,7 @@ public class GameScreen implements Screen {
 		renderQueue = new RenderQueue(game.getScale());
 		
 //		debugSetup();
-		
+		addEntity(scoreHUD);
 		Gdx.input.setInputProcessor(input);
 	}
 	
@@ -78,6 +82,14 @@ public class GameScreen implements Screen {
 		createSpawner(100, queue, 3f, 0f);
 		
 		createTruck(8, Box.RED);
+	}
+	
+	public void setScore(int maxScore, int maxMiss) {
+		scoreHUD.set(maxScore, maxMiss);
+	}
+	
+	public ScoreHUD getScoreHUD() {
+		return scoreHUD;
 	}
 
 	public void createBelt(int x, int y, int length, int initState, boolean locked) {
@@ -203,6 +215,11 @@ public class GameScreen implements Screen {
 	public void recycle(Box box) {
 		Spawner spawner = spawners.get((int)(Math.random()*spawners.size()));
 		spawner.recycleBlock(box.getColor());
+	}
+
+	public void endGame(int i) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

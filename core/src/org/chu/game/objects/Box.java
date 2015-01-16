@@ -1,9 +1,7 @@
 package org.chu.game.objects;
 
-import java.util.List;
-
 import org.chu.game.BeltMaster;
-import org.chu.game.RenderQueue;
+import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -140,7 +138,13 @@ public class Box extends Entity {
 //			sound.play();
 		} else if(e instanceof Truck) {
 			Truck t = (Truck) e;
-			screen.addEntity(new ScorePopup(t.x, t.y+64, t.getColor().equals(color)));
+			if(t.getColor().equals(color)) {
+				screen.addEntity(new ScorePopup(t.x, t.y+64, true));
+				screen.getScoreHUD().score();
+			} else {
+				screen.addEntity(new ScorePopup(t.x, t.y+64, false));
+				screen.getScoreHUD().miss();
+			}
 			screen.removeEntity(this);
 			t.startBounce();
 		} else if(e instanceof Recycler) {

@@ -3,6 +3,7 @@ package org.chu.game;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Recycler;
+import org.chu.game.objects.ScoreHUD;
 import org.chu.game.objects.ScorePopup;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
@@ -11,7 +12,6 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -56,17 +56,20 @@ public class BeltMaster extends Game {
 		Recycler.setupAnimations(this);
 		ScorePopup.setupAnimations(this);
 		SelectButton.setupAnimations(this);
+		ScoreHUD.setupAnimations(this);
 		
 		this.setScreen(new MainMenuScreen(this));
 	}
 	
 	private void loadAssets() {
 		String suffix = SCALE == 2 ? "@2x" : "";
-		assets.load("box-sheet"+suffix+".png", Texture.class);
-		assets.load("belt-sheet"+suffix+".png", Texture.class);
-		assets.load("game-objects"+suffix+".png", Texture.class);
-		assets.load("select-box"+suffix+".png", Texture.class);
-		assets.load("select-box-down"+suffix+".png", Texture.class);
+		assets.load("img/box-sheet"+suffix+".png", Texture.class);
+		assets.load("img/belt-sheet"+suffix+".png", Texture.class);
+		assets.load("img/game-objects"+suffix+".png", Texture.class);
+		assets.load("img/select-box"+suffix+".png", Texture.class);
+		assets.load("img/select-box-down"+suffix+".png", Texture.class);
+		assets.load("img/scorebar-overlay"+suffix+".png", Texture.class);
+		assets.load("img/scorebar-fill"+suffix+".png", Texture.class);
 		assets.load("fonts/vcr-osd-mono"+suffix+".fnt", BitmapFont.class);
 		assets.load("audio/spawner.wav", Sound.class);
 		assets.load("audio/box-fall-1.wav", Sound.class);
@@ -99,7 +102,7 @@ public class BeltMaster extends Game {
 
 	public Texture getTexture(String string) {
 		String suffix = SCALE == 2 ? "@2x" : "";
-		return assets.get(string+suffix+".png", Texture.class);
+		return assets.get("img/"+string+suffix+".png", Texture.class);
 	}
 
 	public Sound getSound(String string) {

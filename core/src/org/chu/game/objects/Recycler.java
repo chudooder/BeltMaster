@@ -1,7 +1,7 @@
 package org.chu.game.objects;
 
 import org.chu.game.BeltMaster;
-import org.chu.game.RenderQueue;
+import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

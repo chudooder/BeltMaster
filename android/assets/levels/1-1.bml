@@ -1,4 +1,5 @@
 .nick Intern
+.miss 3
 .pool Rx5 Bx5
 .spawner 12 4 2 ??????????
 .belt 9 7 7 3 false

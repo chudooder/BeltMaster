@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.chu.game.BeltMaster;
-import org.chu.game.RenderQueue;
+import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;

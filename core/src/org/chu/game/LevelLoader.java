@@ -39,13 +39,18 @@ public class LevelLoader {
 		Scanner in = new Scanner(levelFile.readString());
 		
 		List<Color> pool = new ArrayList<Color>();
+		int maxMiss = Integer.MAX_VALUE;
+		int maxScore = 0;
 		
 		while(in.hasNextLine()) {
 			String line = in.nextLine();
 			if(line.isEmpty()) continue;
 			if(line.startsWith("#")) continue;
 			
-			if(line.startsWith(".pool")) {
+			if(line.startsWith(".miss")) {
+				maxMiss = Integer.parseInt(line.split(" ")[1]);
+			}
+			else if(line.startsWith(".pool")) {
 				String[] parse = line.split(" ");
 				for(int i=1; i<parse.length; i++) {
 					String[] block = parse[i].split("x");
@@ -87,6 +92,7 @@ public class LevelLoader {
 						}
 					}
 				}
+				maxScore += queue.size();
 				screen.createSpawner(x, queue, spawnTime, offset);
 			}
 			else if(line.startsWith(".recycler")) {
@@ -95,6 +101,7 @@ public class LevelLoader {
 				screen.createRecycler(x);
 			}
 		}
+		screen.setScore(maxScore, maxMiss);
 		in.close();
 		return screen;
 	}

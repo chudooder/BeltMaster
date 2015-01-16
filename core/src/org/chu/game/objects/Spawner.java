@@ -1,9 +1,10 @@
 package org.chu.game.objects;
 
+import java.util.LinkedList;
 import java.util.Queue;
 
 import org.chu.game.BeltMaster;
-import org.chu.game.RenderQueue;
+import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -17,6 +18,8 @@ public class Spawner extends Entity {
 	
 	private float spawnTimer;			// internal clock
 	private float spawnTime;			// time between block spawns
+	private float offset;
+	private Queue<Color> originalQueue;	// original queue to copy over in case reset
 	private Queue<Color> spawnColors;	// queue of blocks to spawn
 	
 	private static TextureRegion sprite;
@@ -35,8 +38,11 @@ public class Spawner extends Entity {
 		super(x, y);
 		this.spawnColors = spawnColors;
 		this.spawnTime = spawnTime;
+		this.offset = offset;
 		this.spawnTimer = offset;
 		this.soundPlayed = false;
+		
+		originalQueue = new LinkedList<Color>(spawnColors);
 	}
 
 	@Override
@@ -56,6 +62,11 @@ public class Spawner extends Entity {
 				}
 			}
 		}
+	}
+	
+	public void reset() {
+		spawnColors = new LinkedList<Color>(originalQueue);
+		spawnTimer = offset;
 	}
 	
 	public void recycleBlock(Color color) {

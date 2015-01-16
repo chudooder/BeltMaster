@@ -1,4 +1,5 @@
 .nick Recycle
+.miss 5
 .pool Rx5 Bx5
 .spawner 10 1 0 BRRBRBBRBR??????????
 .belt 9 5 5 3 true

@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Beltmaster";
 		config.width = 800;
-		config.height = 600;
+		config.height = 450;
 		new LwjglApplication(new BeltMaster(), config);
 	}
 }
