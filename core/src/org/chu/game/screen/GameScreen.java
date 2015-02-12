@@ -1,19 +1,21 @@
-package org.chu.game;
+package org.chu.game.screen;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.chu.game.BeltMaster;
 import org.chu.game.input.BeltGestureProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Entity;
 import org.chu.game.objects.Recycler;
-import org.chu.game.objects.ScoreHUD;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.ui.PauseButton;
+import org.chu.game.ui.ScoreHUD;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -22,6 +24,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -34,6 +37,8 @@ public class GameScreen implements Screen {
 	private List<Entity> entities;
 	private List<Spawner> spawners;
 	
+	private float topY;
+	
 	private ScoreHUD scoreHUD;
 	
 	private Queue<Entity> addQueue;
@@ -45,10 +50,10 @@ public class GameScreen implements Screen {
 	public GameScreen(BeltMaster game) {
 		this.game = game;
 		
-
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800*game.getScale(), 450*game.getScale());
 		viewport = new ExtendViewport(800*game.getScale(), 450*game.getScale(), camera);
+		viewport.update(800*game.getScale(), 450*game.getScale());
 		
 		entities = new ArrayList<Entity>();
 		spawners = new ArrayList<Spawner>();
@@ -63,6 +68,7 @@ public class GameScreen implements Screen {
 		
 //		debugSetup();
 		addEntity(scoreHUD);
+		addEntity(new PauseButton());
 		Gdx.input.setInputProcessor(input);
 	}
 	
@@ -196,7 +202,10 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void dispose() {
-		
+		entities.clear();
+		spawners.clear();
+		addQueue.clear();
+		removeQueue.clear();
 	}
 	
 	public BeltMaster getGame() {
@@ -225,5 +234,7 @@ public class GameScreen implements Screen {
 		return viewport;
 	}
 
-
+	public float getTopY() {
+		return viewport.unproject(new Vector2(0, 0)).y;
+	}
 }

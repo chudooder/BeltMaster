@@ -1,4 +1,6 @@
-package org.chu.game;
+package org.chu.game.screen;
+
+import org.chu.game.BeltMaster;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

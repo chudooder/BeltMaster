@@ -1,6 +1,7 @@
-package org.chu.game.objects;
+package org.chu.game.ui;
 
 import org.chu.game.BeltMaster;
+import org.chu.game.objects.Entity;
 import org.chu.game.render.RenderCall;
 import org.chu.game.render.RenderQueue;
 
@@ -46,7 +47,6 @@ public class ScoreHUD extends Entity {
 	}
 	
 	public void set(int maxScore, int maxMiss) {
-		System.out.println("MAX SCORE:"+maxScore);
 		this.maxScore = maxScore;
 		this.maxMiss = maxMiss;
 	}
@@ -80,8 +80,7 @@ public class ScoreHUD extends Entity {
 	@Override
 	public void render(float time, RenderQueue queue) {
 		float oX = 800 - 138;
-		float oY = screen.getViewport().getCamera().unproject(new Vector3(0, 0, 0)).y 
-				/ screen.getGame().getScale() - 26;
+		float oY = screen.getTopY() / screen.getGame().getScale() - 26;
 		float barWidth = 128.0f / maxScore;
 		float scoreWidth = score * barWidth;
 		float missX = oX + (maxScore - maxMiss) * barWidth;

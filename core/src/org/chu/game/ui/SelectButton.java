@@ -1,4 +1,6 @@
-package org.chu.game;
+package org.chu.game.ui;
+
+import org.chu.game.BeltMaster;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

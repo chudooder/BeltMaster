@@ -9,8 +9,8 @@ public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Beltmaster";
-		config.width = 1600;
-		config.height = 900;
+		config.width = 800;
+		config.height = 480;
 		new LwjglApplication(new BeltMaster(), config);
 	}
 }

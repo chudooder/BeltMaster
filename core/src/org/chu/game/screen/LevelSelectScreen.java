@@ -1,6 +1,10 @@
-package org.chu.game;
+package org.chu.game.screen;
 
 import java.util.List;
+
+import org.chu.game.BeltMaster;
+import org.chu.game.LevelLoader;
+import org.chu.game.ui.SelectButton;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,7 +22,6 @@ public class LevelSelectScreen implements Screen {
 	
 	private BeltMaster game;
 	private LevelLoader levelLoader;
-	private OrthographicCamera camera;
 	
 	private Stage stage;
 	private Table table;

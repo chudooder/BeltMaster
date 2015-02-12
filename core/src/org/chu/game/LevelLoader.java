@@ -7,6 +7,7 @@ import java.util.Queue;
 import java.util.Scanner;
 
 import org.chu.game.objects.Box;
+import org.chu.game.screen.GameScreen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;

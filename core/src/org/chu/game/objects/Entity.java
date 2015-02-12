@@ -1,7 +1,7 @@
 package org.chu.game.objects;
 
-import org.chu.game.GameScreen;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.screen.GameScreen;
 
 import com.badlogic.gdx.math.Rectangle;
 
