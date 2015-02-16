@@ -1,0 +1,10 @@
+.nick Priority Problem
+.miss 5
+.pool Rx15 Bx15
+.spawner 6 2.5 0 RRBRBBB????????
+.spawner 10 2.5 0 BBRRRBR????????
+.belt 9 5 4 4 true
+.belt 4 7 7 2 false
+.belt 9 11 7 2 false
+.truck 8 R
+.truck 16 B

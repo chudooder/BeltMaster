@@ -44,6 +44,7 @@ public class LevelSelectScreen implements Screen {
 	
 	private void setupButtons() {
 		List<String> levels = levelLoader.getLevelNames();
+		int width = 0;
 		for(int i=0; i<levels.size(); i++) {
 			final SelectButton box = new SelectButton(levels.get(i), i);
 			box.addListener(new ClickListener(){
@@ -54,7 +55,13 @@ public class LevelSelectScreen implements Screen {
 					game.setScreen(screen);
 				}
 			});
-			table.add(box).pad(32);
+			width += 80*game.getScale();
+			table.add(box).pad(16*game.getScale());
+			if(width > 600*game.getScale()) {
+				width = 0;
+				System.out.println("row");
+				table.row();
+			}
 		}
 
 	}
