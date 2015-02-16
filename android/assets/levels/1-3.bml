@@ -1,0 +1,11 @@
+.nick The Daily Grind
+.miss 3
+.pool Rx4 Bx4 Gx4 Yx4
+.spawner 13 2.5 0 ????????????????
+.belt 11 6 5 1 false
+.belt 9 8 4 3 false
+.belt 11 10 3 1 false
+.truck 8 R
+.truck 10 G
+.truck 16 B
+.truck 14 Y

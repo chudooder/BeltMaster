@@ -1,0 +1,9 @@
+.nick Second Step
+.miss 3
+.pool Rx4 Bx4 Gx4
+.spawner 15 4 2 ????????????
+.belt 13 7 5 1 false
+.belt 9 10 5 2 false
+.truck 8 R
+.truck 14 G
+.truck 18 B

@@ -222,6 +222,9 @@ public class GameScreen implements Screen {
 
 	public void recycle(Box box) {
 		Spawner spawner = spawners.get((int)(Math.random()*spawners.size()));
+		if(box.getSpawner() == spawner) {
+			spawner = spawners.get((int)(Math.random()*spawners.size()));
+		}
 		spawner.recycleBlock(box.getColor());
 	}
 

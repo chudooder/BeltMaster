@@ -58,6 +58,7 @@ public class Spawner extends Entity {
 				Color color = spawnColors.poll();
 				if(color != null) {
 					Box box = new Box(x + 16, y + 0, color);
+					box.setSpawner(this);
 					screen.addEntity(box);
 				}
 			}

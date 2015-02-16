@@ -29,6 +29,7 @@ public class Box extends Entity {
 
 	private Color color;
 	private Belt belt;
+	private Spawner spawner;
 	
 	private BoxState state;
 	private float vy;
@@ -160,6 +161,14 @@ public class Box extends Entity {
 
 	public Color getColor() {
 		return color;
+	}
+	
+	public void setSpawner(Spawner s) {
+		this.spawner = s;
+	}
+	
+	public Spawner getSpawner() {
+		return spawner;
 	}
 
 	
