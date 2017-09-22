@@ -13,81 +13,81 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Spawner extends Entity {
-	
-	private static final float DEPTH = -0.5f;
-	
-	private float spawnTimer;			// internal clock
-	private float spawnTime;			// time between block spawns
-	private float offset;
-	private Queue<Color> originalQueue;	// original queue to copy over in case reset
-	private Queue<Color> spawnColors;	// queue of blocks to spawn
-	
-	private static TextureRegion sprite;
-	private static Sound boxPop;
-	
-	private boolean soundPlayed;
-	
-	public static void setupAnimations(BeltMaster beltMaster) {
-		Texture sheet = beltMaster.getTexture("game-objects");
-		sprite = new TextureRegion(sheet, sheet.getWidth()/4*3, 
-				sheet.getHeight()/2, sheet.getWidth()/4, sheet.getHeight()/2);
-		boxPop = beltMaster.getSound("spawner");
-	}
 
-	public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime, float offset) {
-		super(x, y);
-		this.spawnColors = spawnColors;
-		this.spawnTime = spawnTime;
-		this.offset = offset;
-		this.spawnTimer = offset;
-		this.soundPlayed = false;
-		
-		originalQueue = new LinkedList<Color>(spawnColors);
-	}
+    private static final float DEPTH = -0.5f;
 
-	@Override
-	public void update() {
-		if(!spawnColors.isEmpty()) {
-			spawnTimer += Gdx.graphics.getDeltaTime();
-		}
-		if(spawnTimer > spawnTime) {
-			// adjust timer
-			spawnTimer -= spawnTime;
-			// spawn a block
-			if(!spawnColors.isEmpty()) {
-				Color color = spawnColors.poll();
-				if(color != null) {
-					Box box = new Box(x + 16, y + 0, color);
-					box.setSpawner(this);
-					screen.addEntity(box);
-				}
-			}
-		}
-	}
-	
-	public void reset() {
-		spawnColors = new LinkedList<Color>(originalQueue);
-		spawnTimer = offset;
-	}
-	
-	public void recycleBlock(Color color) {
-		spawnColors.add(color);
-	}
+    private float spawnTimer;            // internal clock
+    private float spawnTime;            // time between block spawns
+    private float offset;
+    private Queue<Color> originalQueue;    // original queue to copy over in case reset
+    private Queue<Color> spawnColors;    // queue of blocks to spawn
 
-	@Override
-	public void render(float time, RenderQueue queue) {
-		float offsetY = 0;
-		if(spawnTimer > spawnTime - 0.5f && spawnTimer < spawnTime - 0.1f) {
-			offsetY = (spawnTimer + 0.5f - spawnTime) * 10;
-			soundPlayed = false;
-		} else if (spawnTimer >= spawnTime - 0.1f) {
-			if(!soundPlayed) {
-				boxPop.play();
-				soundPlayed = true;
-			}
-			offsetY = (spawnTime - spawnTimer) * 10;
-		}
-		queue.draw(sprite, x, y + offsetY, DEPTH);
-	}
+    private static TextureRegion sprite;
+    private static Sound boxPop;
+
+    private boolean soundPlayed;
+
+    public static void setupAnimations(BeltMaster beltMaster) {
+        Texture sheet = beltMaster.getTexture("game-objects");
+        sprite = new TextureRegion(sheet, sheet.getWidth()/4*3,
+                sheet.getHeight()/2, sheet.getWidth()/4, sheet.getHeight()/2);
+        boxPop = beltMaster.getSound("spawner");
+    }
+
+    public Spawner(float x, float y, Queue<Color> spawnColors, float spawnTime, float offset) {
+        super(x, y);
+        this.spawnColors = spawnColors;
+        this.spawnTime = spawnTime;
+        this.offset = offset;
+        this.spawnTimer = offset;
+        this.soundPlayed = false;
+
+        originalQueue = new LinkedList<Color>(spawnColors);
+    }
+
+    @Override
+    public void update() {
+        if(!spawnColors.isEmpty()) {
+            spawnTimer += Gdx.graphics.getDeltaTime();
+        }
+        if(spawnTimer > spawnTime) {
+            // adjust timer
+            spawnTimer -= spawnTime;
+            // spawn a block
+            if(!spawnColors.isEmpty()) {
+                Color color = spawnColors.poll();
+                if(color != null) {
+                    Box box = new Box(x + 16, y + 0, color);
+                    box.setSpawner(this);
+                    screen.addEntity(box);
+                }
+            }
+        }
+    }
+
+    public void reset() {
+        spawnColors = new LinkedList<Color>(originalQueue);
+        spawnTimer = offset;
+    }
+
+    public void recycleBlock(Color color) {
+        spawnColors.add(color);
+    }
+
+    @Override
+    public void render(float time, RenderQueue queue) {
+        float offsetY = 0;
+        if(spawnTimer > spawnTime - 0.5f && spawnTimer < spawnTime - 0.1f) {
+            offsetY = (spawnTimer + 0.5f - spawnTime) * 10;
+            soundPlayed = false;
+        } else if (spawnTimer >= spawnTime - 0.1f) {
+            if(!soundPlayed) {
+                boxPop.play();
+                soundPlayed = true;
+            }
+            offsetY = (spawnTime - spawnTimer) * 10;
+        }
+        queue.draw(sprite, x, y + offsetY, DEPTH);
+    }
 
 }

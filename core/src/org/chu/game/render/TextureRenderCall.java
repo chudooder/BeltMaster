@@ -6,32 +6,32 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class TextureRenderCall extends RenderCall {
 
-	TextureRegion region;
-	float x;
-	float y;
-	float width;
-	float height;
-	Color color;
-	
-	public TextureRenderCall(TextureRegion region, float x, float y, float z, Color color) {
-		this(region, x, y, z, color, region.getRegionWidth(), region.getRegionHeight());
-	}
+    TextureRegion region;
+    float x;
+    float y;
+    float width;
+    float height;
+    Color color;
 
-	public TextureRenderCall(TextureRegion region, float x, float y, float z,
-			Color color, float width, float height) {
-		super(z);
-		this.region = region;
-		this.x = x;
-		this.y = y;
-		this.color = color;
-		this.width = width;
-		this.height = height;
-	}
+    public TextureRenderCall(TextureRegion region, float x, float y, float z, Color color) {
+        this(region, x, y, z, color, region.getRegionWidth(), region.getRegionHeight());
+    }
 
-	@Override
-	public void execute(SpriteBatch batch) {
-		batch.setColor(color);
-		batch.draw(region, x, y, width, height);
-	}
+    public TextureRenderCall(TextureRegion region, float x, float y, float z,
+            Color color, float width, float height) {
+        super(z);
+        this.region = region;
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.width = width;
+        this.height = height;
+    }
+
+    @Override
+    public void execute(SpriteBatch batch) {
+        batch.setColor(color);
+        batch.draw(region, x, y, width, height);
+    }
 
 }
