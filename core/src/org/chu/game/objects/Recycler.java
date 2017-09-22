@@ -28,7 +28,7 @@ public class Recycler extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(double dt) {
 
     }
 

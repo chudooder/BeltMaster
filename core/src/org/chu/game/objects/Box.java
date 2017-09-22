@@ -1,6 +1,7 @@
 package org.chu.game.objects;
 
 import org.chu.game.BeltMaster;
+import org.chu.game.Constants;
 import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
@@ -12,8 +13,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Box extends Entity {
-
-    private static final float GRAVITY = 400.0f;
     private static final float SPEED = 60.0f;
     private static final float DEPTH = 0f;
 
@@ -36,6 +35,7 @@ public class Box extends Entity {
     private float vx;
 
     private float timer;
+    private float flyTime;  // when launched, set this to the fly time of the launcher
     private Animation currentAnim;
 
     public static void setupAnimations(BeltMaster beltMaster) {
@@ -70,7 +70,7 @@ public class Box extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(double dt) {
         if(state == BoxState.STANDING) {
             timer = 0;
             // check to see if this box needs to fall
@@ -86,33 +86,45 @@ public class Box extends Entity {
                 }
             } else {
                 // translate box in velocity of conveyor belt
+                x += vx * dt;
                 vx = (belt.getState() - 2) * SPEED;
-                x += vx * Gdx.graphics.getDeltaTime();
             }
         }
 
         else if(state == BoxState.FALLING_LEFT || state == BoxState.FALLING_RIGHT) {
-            timer += Gdx.graphics.getDeltaTime();
+            timer += dt;
             // switch state if box is sufficiently past the end of the belt
             if(timer > 0.12f) {
                 state = BoxState.FREE_FALLING;
+                vx = 0;
             }
             // translate box in velocity of conveyor belt
-            x += vx * Gdx.graphics.getDeltaTime();
+            x += vx * dt;
             // make box fall
-            vy -= GRAVITY * Gdx.graphics.getDeltaTime();
-            y += vy * Gdx.graphics.getDeltaTime();
+            y += vy * dt;
+            vy += Constants.GRAVITY * dt;
         }
 
         else if(state == BoxState.FREE_FALLING) {
-            timer += Gdx.graphics.getDeltaTime();
-            vy -= GRAVITY * Gdx.graphics.getDeltaTime();
-            y += vy * Gdx.graphics.getDeltaTime();
+            timer += dt;
+            x += vx * dt;
+            y += vy * dt;
+            vy += Constants.GRAVITY * dt;
 
             for(Entity e : screen.getEntities()) {
                 if(hitbox.overlaps(e.hitbox)) {
                     collide(e);
                 }
+            }
+        }
+
+        else if(state == BoxState.FLYING) {
+            timer += dt;
+            x += vx * dt;
+            y += vy * dt;
+            vy += Constants.GRAVITY * dt;
+            if(timer > flyTime * 0.9) {
+                state = BoxState.FREE_FALLING;
             }
         }
 
@@ -137,6 +149,7 @@ public class Box extends Entity {
             // play sound
 //            Sound sound = fallSounds[(int)(Math.random()*fallSounds.length)];
 //            sound.play();
+
         } else if(e instanceof Truck) {
             Truck t = (Truck) e;
             if(t.getColor().equals(color)) {
@@ -148,9 +161,20 @@ public class Box extends Entity {
             }
             screen.removeEntity(this);
             t.startBounce();
+
         } else if(e instanceof Recycler) {
             screen.recycle(this);
             screen.removeEntity(this);
+
+        } else if(e instanceof Boxapult) {
+            Boxapult b = (Boxapult) e;
+            x = b.getX0();
+            y = b.getY0();
+            vx = b.getVx();
+            vy = b.getVy();
+            flyTime = b.getFlyTime();
+            state = BoxState.FLYING;
+            timer = 0;
         }
     }
 
@@ -176,6 +200,7 @@ public class Box extends Entity {
         STANDING,
         FALLING_LEFT,
         FALLING_RIGHT,
-        FREE_FALLING
+        FREE_FALLING,
+        FLYING
     }
 }

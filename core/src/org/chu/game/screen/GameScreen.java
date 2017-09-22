@@ -9,6 +9,7 @@ import org.chu.game.BeltMaster;
 import org.chu.game.input.BeltGestureProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
+import org.chu.game.objects.Boxapult;
 import org.chu.game.objects.Entity;
 import org.chu.game.objects.Recycler;
 import org.chu.game.objects.Spawner;
@@ -125,6 +126,11 @@ public class GameScreen implements Screen {
         addEntity(r);
     }
 
+    public void createBoxapult(int x, int y, int destX, int destY) {
+        Boxapult b = new Boxapult(x, y, destX, destY);
+        addEntity(b);
+    }
+
     public void addEntity(Entity e) {
         e.setScreen(this);
         addQueue.add(e);
@@ -134,7 +140,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         // update things
-        update();
+        update(Gdx.graphics.getDeltaTime());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -154,12 +160,12 @@ public class GameScreen implements Screen {
         game.batch.end();
     }
 
-    private void update() {
+    private void update(double dt) {
         if(isPaused) return;
 
         // update box positions
         for(Entity e : entities) {
-            e.update();
+            e.update(dt);
         }
 
         // process remove queue

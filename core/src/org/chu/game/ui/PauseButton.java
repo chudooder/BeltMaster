@@ -27,7 +27,7 @@ public class PauseButton extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(double dt) {
         int scale = screen.getGame().getScale();
         y = screen.getTopY() / scale - 32;
         width = 32 * scale;

@@ -42,10 +42,10 @@ public class ScorePopup extends Entity {
     }
 
     @Override
-    public void update() {
-        vy -= 64f * Gdx.graphics.getDeltaTime();
-        y += vy * Gdx.graphics.getDeltaTime();
-        timer += Gdx.graphics.getDeltaTime();
+    public void update(double dt) {
+        y += vy * dt;
+        vy -= 64f * dt;
+        timer += dt;
 
         if(timer > 1.0f) screen.removeEntity(this);
     }

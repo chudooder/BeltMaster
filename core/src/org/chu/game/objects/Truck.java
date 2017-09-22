@@ -48,9 +48,9 @@ public class Truck extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(double dt) {
         if(bounceTimer >= 0) {
-            bounceTimer += Gdx.graphics.getDeltaTime();
+            bounceTimer += dt;
             bounceOffset = (float) (3 * Math.sin(bounceTimer * 2 * Math.PI));
             if(bounceTimer > 0.5f) {
                 bounceTimer = -1;

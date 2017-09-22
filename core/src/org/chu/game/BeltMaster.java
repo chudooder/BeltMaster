@@ -2,6 +2,7 @@ package org.chu.game;
 
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
+import org.chu.game.objects.Boxapult;
 import org.chu.game.objects.Recycler;
 import org.chu.game.objects.ScorePopup;
 import org.chu.game.objects.Spawner;
@@ -59,6 +60,7 @@ public class BeltMaster extends Game {
         Truck.setupAnimations(this);
         Spawner.setupAnimations(this);
         Recycler.setupAnimations(this);
+        Boxapult.setupAnimations(this);
         ScorePopup.setupAnimations(this);
         SelectButton.setupAnimations(this);
         ScoreHUD.setupAnimations(this);
@@ -81,6 +83,7 @@ public class BeltMaster extends Game {
         assets.load("img/pause-button"+suffix+".png", Texture.class);
         assets.load("img/resume-button"+suffix+".png", Texture.class);
         assets.load("img/level-select-button"+suffix+".png", Texture.class);
+        assets.load("img/boxapult"+suffix+".png", Texture.class);
         assets.load("fonts/vcr-osd-mono"+suffix+".fnt", BitmapFont.class);
         assets.load("audio/spawner.wav", Sound.class);
         assets.load("audio/box-fall-1.wav", Sound.class);

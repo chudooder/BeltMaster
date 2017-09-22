@@ -1,0 +1,15 @@
+.nick High Flier
+.miss 5
+.pool Rx15 Bx15
+.spawner 6 3 1.5 ???????????????
+.spawner 18 3 0 ???????????????
+.belt 5 7 4 3 false
+.belt 7 9 3 3 false
+.belt 8 4 2 1 true
+.belt 16 7 4 1 false
+.belt 15 9 3 1 false
+.belt 15 4 2 3 true
+.boxapult 10 10 15 3
+.boxapult 14 10 9 3
+.truck 6 R
+.truck 18 B

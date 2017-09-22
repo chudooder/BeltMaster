@@ -52,7 +52,7 @@ public class ScoreHUD extends Entity {
     }
 
     @Override
-    public void update() {
+    public void update(double dt) {
 
     }
 

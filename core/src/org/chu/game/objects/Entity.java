@@ -24,7 +24,7 @@ public abstract class Entity {
         screen = s;
     }
 
-    public abstract void update();
+    public abstract void update(double dt);
 
     public abstract void render(float time, RenderQueue queue);
 }
