@@ -28,8 +28,6 @@ public class PauseScreen implements Screen {
         stage = new Stage();
         table = new Table();
 
-        Gdx.input.setInputProcessor(stage);
-
         LabelStyle style = new LabelStyle(game.getFont("vcr-osd-mono"), Color.WHITE);
         table.setFillParent(true);
         table.add(new Label("PAUSED", style));
@@ -65,8 +63,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void show() {
-        // TODO Auto-generated method stub
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override

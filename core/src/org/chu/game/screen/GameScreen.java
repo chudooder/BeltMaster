@@ -70,7 +70,6 @@ public class GameScreen implements Screen {
 //        debugSetup();
         addEntity(scoreHUD);
         addEntity(new PauseButton());
-        Gdx.input.setInputProcessor(input);
     }
 
     private void debugSetup() {
@@ -203,7 +202,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(input);
     }
 
     @Override

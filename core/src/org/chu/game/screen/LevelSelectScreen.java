@@ -30,10 +30,7 @@ public class LevelSelectScreen implements Screen {
     public LevelSelectScreen(BeltMaster game) {
         this.game = game;
         levelLoader = new LevelLoader(game);
-
         stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
-
         table = new Table();
         table.setFillParent(true);
         setupButtons();
@@ -69,7 +66,7 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
