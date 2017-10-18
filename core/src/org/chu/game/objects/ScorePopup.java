@@ -2,6 +2,7 @@ package org.chu.game.objects;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.render.SpriteSheet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -23,10 +24,9 @@ public class ScorePopup extends Entity {
     private float vy;
 
     public static void setupAnimations(BeltMaster beltMaster) {
-        Texture sheet = beltMaster.getTexture("game-objects");
-        TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth()/4, sheet.getHeight()/4);
-        goodTex = tmp[2][2];
-        missTex = tmp[3][2];
+        SpriteSheet sheet = beltMaster.getSpriteSheet("game-objects");
+        goodTex = sheet.getRegion(8, 4, 4, 2);
+        missTex = sheet.getRegion(8, 6, 4, 2);
 
         score = beltMaster.getSound("score");
         miss = beltMaster.getSound("miss");

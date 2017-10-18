@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import org.chu.game.BeltMaster;
 import org.chu.game.Constants;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.render.SpriteSheet;
 
 /**
  * Created by Chudooder on 9/22/2017.
@@ -17,7 +18,8 @@ public class Boxapult extends Entity {
     private static final int DELTA_H = 32;
     private static final float DEPTH = 0.1f;
 
-    private static TextureRegion idle;
+    private static TextureRegion base;
+    private static TextureRegion top;
 
     private final float vx;
     private final float vy;
@@ -26,8 +28,9 @@ public class Boxapult extends Entity {
     private final float flyTime;
 
     public static void setupAnimations(BeltMaster game) {
-        Texture tex = game.getTexture("boxapult");
-        idle = new TextureRegion(tex, 0, 0, tex.getWidth(), tex.getHeight());
+        SpriteSheet sheet = game.getSpriteSheet("game-objects");
+        base = sheet.getRegion(0, 8, 2, 2);
+        top = sheet.getRegion(2, 8, 2, 2);
     }
 
     public Boxapult(int x, int y, int destX, int destY) {
@@ -72,6 +75,6 @@ public class Boxapult extends Entity {
 
     @Override
     public void render(float time, RenderQueue queue) {
-        queue.draw(idle, x, y, DEPTH);
+        queue.draw(base, x, y, DEPTH);
     }
 }

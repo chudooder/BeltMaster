@@ -13,7 +13,7 @@ public class Belt extends Entity {
 
     // physics constants
     private static final float SLOW_SPEED = (1.0f / 30.0f);
-    private static final int FALL_POINT = 7;
+    private static final int FALL_POINT = 5;
 
     // render depth
     private static final float DEPTH = 0.1f;

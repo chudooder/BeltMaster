@@ -19,6 +19,10 @@ public class LevelLoader {
     private FileHandle levelsFile;
     private List<String> levels;
 
+    /**
+     * Levels are 25x15. Origin is bottom left.
+     */
+
     public LevelLoader(BeltMaster game) {
         this.game = game;
         levelsFile = Gdx.files.internal("levels/levels.bml");

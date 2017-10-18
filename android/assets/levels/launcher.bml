@@ -1,0 +1,16 @@
+.nick Launch Party
+.miss 5
+.pool Rx15 Bx15
+.spawner 4 3 0 ???????????????
+.spawner 8 3 0 ???????????????
+.belt 3 4 3 3 false
+.belt 5 6 3 3 false
+.belt 7 8 3 3 false
+.belt 9 10 3 3 false
+.belt 3 8 3 0 true
+.belt 11 12 5 4 false
+.belt 11 4 4 0 true
+.boxapult 16 12 12 3
+.boxapult 10 4 6 5
+.truck 2 R
+.truck 10 B

@@ -2,6 +2,7 @@ package org.chu.game.objects;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.render.SpriteSheet;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,11 +16,9 @@ public class Recycler extends Entity {
     private static TextureRegion frontSprite;
 
     public static void setupAnimations(BeltMaster beltMaster) {
-        Texture sheet = beltMaster.getTexture("game-objects");
-        frontSprite = new TextureRegion(sheet, 0, sheet.getHeight()/4*3,
-                sheet.getWidth()/4, sheet.getHeight()/4);
-        backSprite = new TextureRegion(sheet, sheet.getWidth()/4,
-                sheet.getHeight()/2, sheet.getWidth()/4, sheet.getHeight()/8*3);
+        SpriteSheet sheet = beltMaster.getSpriteSheet("game-objects");
+        frontSprite = sheet.getRegion(0, 6, 4, 2);
+        backSprite = sheet.getRegion(4, 4, 4, 3);
     }
 
     public Recycler(float x, float y) {

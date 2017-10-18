@@ -7,6 +7,7 @@ import org.chu.game.objects.Recycler;
 import org.chu.game.objects.ScorePopup;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
+import org.chu.game.render.SpriteSheet;
 import org.chu.game.screen.MainMenuScreen;
 import org.chu.game.ui.LevelSelectButton;
 import org.chu.game.ui.PauseButton;
@@ -23,6 +24,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BeltMaster extends Game {
 
     private static int SCALE = 2;
@@ -31,6 +35,7 @@ public class BeltMaster extends Game {
 
     private OrthographicCamera camera;
     private AssetManager assets;
+    private Map<String, SpriteSheet> spriteSheets;
 
     private float stateTime;
 
@@ -49,10 +54,13 @@ public class BeltMaster extends Game {
 
         batch = new SpriteBatch();
         assets = new AssetManager();
+        spriteSheets = new HashMap<String, SpriteSheet>();
 
         loadAssets();
 
         while(!assets.update());
+
+        makeSpriteSheets();
 
         // setup animations
         Belt.setupAnimations(this);
@@ -94,6 +102,10 @@ public class BeltMaster extends Game {
         assets.load("audio/score.wav", Sound.class);
     }
 
+    private void makeSpriteSheets() {
+        spriteSheets.put("game-objects", new SpriteSheet(getTexture("game-objects"), 16, 16));
+    }
+
     @Override
     public void render() {
         super.render();
@@ -127,5 +139,9 @@ public class BeltMaster extends Game {
     public BitmapFont getFont(String string) {
         String suffix = SCALE == 2 ? "@2x" : "";
         return assets.get("fonts/"+string+suffix+".fnt", BitmapFont.class);
+    }
+
+    public SpriteSheet getSpriteSheet(String string) {
+        return spriteSheets.get(string);
     }
 }

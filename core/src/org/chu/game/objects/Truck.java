@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.render.SpriteSheet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -26,19 +27,16 @@ public class Truck extends Entity {
     private float bounceOffset = 0;
 
     public static void setupAnimations(BeltMaster beltMaster) {
-        Texture sheet = beltMaster.getTexture("game-objects");
+        SpriteSheet sheet = beltMaster.getSpriteSheet("game-objects");
         fronts = new HashMap<Color, TextureRegion>();
 
-        TextureRegion[][] tmp = TextureRegion.split(sheet, sheet.getWidth()/4, sheet.getHeight()/2);
+        fronts.put(Box.RED, sheet.getRegion(0, 0, 4, 4));
+        fronts.put(Box.GREEN, sheet.getRegion(4, 0, 4, 4));
+        fronts.put(Box.BLUE, sheet.getRegion(8, 0, 4, 4));
+        fronts.put(Box.YELLOW, sheet.getRegion(12, 0, 4, 4));
 
-        fronts.put(Box.RED, tmp[0][0]);
-        fronts.put(Box.GREEN, tmp[0][1]);
-        fronts.put(Box.BLUE, tmp[0][2]);
-        fronts.put(Box.YELLOW, tmp[0][3]);
-
-        wheels = new TextureRegion(sheet, sheet.getWidth()/4,
-                sheet.getHeight()/8*7, sheet.getWidth()/4, sheet.getHeight()/8);
-        back = new TextureRegion(sheet, 0, sheet.getHeight()/4*2, sheet.getWidth()/4, sheet.getHeight()/4);
+        wheels = sheet.getRegion(4, 7, 4, 1);
+        back = sheet.getRegion(0, 4, 4, 2);
     }
 
     public Truck(int x, int y, Color color) {

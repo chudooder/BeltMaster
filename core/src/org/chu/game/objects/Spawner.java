@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.render.RenderQueue;
+import org.chu.game.render.SpriteSheet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -28,9 +29,8 @@ public class Spawner extends Entity {
     private boolean soundPlayed;
 
     public static void setupAnimations(BeltMaster beltMaster) {
-        Texture sheet = beltMaster.getTexture("game-objects");
-        sprite = new TextureRegion(sheet, sheet.getWidth()/4*3,
-                sheet.getHeight()/2, sheet.getWidth()/4, sheet.getHeight()/2);
+        SpriteSheet sheet = beltMaster.getSpriteSheet("game-objects");
+        sprite = sheet.getRegion(12, 4, 4, 4);
         boxPop = beltMaster.getSound("spawner");
     }
 

@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 public class Box extends Entity {
     private static final float SPEED = 60.0f;
+    private static final float PUSH_OUT_SPEED = 30.0f;
     private static final float DEPTH = 0f;
 
     public static final Color RED = new Color(1f, 0f, 0f, 1f);
@@ -89,6 +90,8 @@ public class Box extends Entity {
                 x += vx * dt;
                 vx = (belt.getState() - 2) * SPEED;
             }
+
+            handleCollisions(dt);
         }
 
         else if(state == BoxState.FALLING_LEFT || state == BoxState.FALLING_RIGHT) {
@@ -103,6 +106,8 @@ public class Box extends Entity {
             // make box fall
             y += vy * dt;
             vy += Constants.GRAVITY * dt;
+
+            handleCollisions(dt);
         }
 
         else if(state == BoxState.FREE_FALLING) {
@@ -111,11 +116,7 @@ public class Box extends Entity {
             y += vy * dt;
             vy += Constants.GRAVITY * dt;
 
-            for(Entity e : screen.getEntities()) {
-                if(hitbox.overlaps(e.hitbox)) {
-                    collide(e);
-                }
-            }
+            handleCollisions(dt);
         }
 
         else if(state == BoxState.FLYING) {
@@ -126,6 +127,8 @@ public class Box extends Entity {
             if(timer > flyTime * 0.9) {
                 state = BoxState.FREE_FALLING;
             }
+
+            // notably, do NOT handle collisions while flying
         }
 
         // update hitbox position
@@ -137,8 +140,27 @@ public class Box extends Entity {
         }
     }
 
-    private void collide(Entity e) {
-        if(e instanceof Belt) {
+    private void handleCollisions(double dt) {
+        for(Entity e : screen.getEntities()) {
+            if(e == this) continue;
+            if(hitbox.overlaps(e.hitbox)) {
+                collide(e, dt);
+            }
+        }
+    }
+
+    private void collide(Entity e, double dt) {
+        if(e instanceof Box) {
+            // push out of the box if we're on a conveyor belt only
+            if(this.state == BoxState.STANDING) {
+                Box b = (Box)e;
+                if(b.x > this.x) {
+                    this.x -= PUSH_OUT_SPEED * dt;
+                } else {
+                    this.x += PUSH_OUT_SPEED * dt;
+                }
+            }
+        } else if(e instanceof Belt) {
             Belt b = (Belt)e;
             this.belt = b;
             // push up out of belt
