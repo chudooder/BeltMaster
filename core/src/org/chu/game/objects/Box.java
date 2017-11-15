@@ -22,8 +22,8 @@ public class Box extends Entity {
     public static final Color BLUE = new Color(0f, 0.423f, 1f, 1f);
     public static final Color YELLOW = new Color(1f, 0.753f, 0f, 1f);
 
-    private static Animation fallingLeft;
-    private static Animation fallingRight;
+    private static Animation<TextureRegion> fallingLeft;
+    private static Animation<TextureRegion> fallingRight;
 
     private static Sound[] fallSounds;
 
@@ -37,7 +37,7 @@ public class Box extends Entity {
 
     private float timer;
     private float flyTime;  // when launched, set this to the fly time of the launcher
-    private Animation currentAnim;
+    private Animation<TextureRegion> currentAnim;
 
     public static void setupAnimations(BeltMaster beltMaster) {
         Texture sheet = beltMaster.getTexture("box-sheet");
@@ -50,9 +50,9 @@ public class Box extends Entity {
             fallRight[i] = tmp[1][i];
         }
 
-        fallingLeft = new Animation(0.08f, fallLeft);
+        fallingLeft = new Animation<TextureRegion>(0.08f, fallLeft);
         fallingLeft.setPlayMode(Animation.PlayMode.LOOP);
-        fallingRight = new Animation(0.08f, fallRight);
+        fallingRight = new Animation<TextureRegion>(0.08f, fallRight);
         fallingRight.setPlayMode(Animation.PlayMode.LOOP);
 
         fallSounds = new Sound[3];
