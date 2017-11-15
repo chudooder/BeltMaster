@@ -78,10 +78,10 @@ public class Box extends Entity {
             Rectangle test = new Rectangle(hitbox);
             test.setPosition(x+4, y+3);
             if(!test.overlaps(belt.hitbox)) {
-                if(belt.getState() < 2) {
+                if(this.x < belt.hitbox.getX() + belt.hitbox.getWidth() / 2) {
                     state = BoxState.FALLING_LEFT;
                     currentAnim = fallingLeft;
-                } else if(belt.getState() > 2) {
+                } else {
                     state = BoxState.FALLING_RIGHT;
                     currentAnim = fallingRight;
                 }
