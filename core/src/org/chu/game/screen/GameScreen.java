@@ -31,6 +31,11 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
 
+    public enum GameOutcome {
+        WON,
+        LOST
+    }
+
     private BeltMaster game;
     private boolean isPaused;
     private Viewport viewport;
@@ -182,7 +187,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         System.out.println(width);
         viewport.update(width, height);
-        return;
     }
 
     @Override
@@ -207,10 +211,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        entities.clear();
-        spawners.clear();
-        addQueue.clear();
-        removeQueue.clear();
+
     }
 
     public BeltMaster getGame() {
@@ -233,9 +234,14 @@ public class GameScreen implements Screen {
         spawner.recycleBlock(box.getColor());
     }
 
-    public void endGame(int i) {
-        // TODO Auto-generated method stub
-
+    public void endGame(GameOutcome i) {
+        if(i == GameOutcome.LOST) {
+            System.out.println("NA WORKERS LUL");
+            game.setScreenWithDispose(this, new LevelSelectScreen(this.game));
+        } else {
+            System.out.println("EU ARTISANS PogChamp");
+            game.setScreenWithDispose(this, new LevelSelectScreen(this.game));
+        }
     }
 
     public Viewport getViewport() {

@@ -3,6 +3,7 @@ package org.chu.game.render;
 import java.util.PriorityQueue;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
@@ -32,6 +33,10 @@ public class RenderQueue {
 
     public void draw(TextureRegion region, float x, float y, float z, Color c, float width, float height) {
         queue.add(new TextureRenderCall(region, x*scale, y*scale, z, c, width*scale, height*scale));
+    }
+
+    public void print(BitmapFont font, String text, float x, float y, float z, Color c) {
+        queue.add(new FontRenderCall(font, text, x*scale, y*scale, z, c));
     }
 
     public void add(RenderCall call) {

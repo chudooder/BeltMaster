@@ -39,7 +39,7 @@ public class BeltGestureProcessor implements GestureListener {
     @Override
     public boolean tap(float x, float y, int count, int button) {
         if(isSelected) {
-            belt.setState(2);
+            belt.setState(2);   // stop belt
             isSelected = false;
             return true;
         }
@@ -56,13 +56,13 @@ public class BeltGestureProcessor implements GestureListener {
     public boolean fling(float velocityX, float velocityY, int button) {
         if(isSelected) {
             if(velocityX > 1500) {
-                belt.setState(4);
+                belt.setState(4);   // moving right fast
             } else if(velocityX > 0) {
-                belt.setState(3);
+                belt.setState(3);   // moving right
             } else if(velocityX > -1500) {
-                belt.setState(1);
+                belt.setState(1);   // moving left
             } else {
-                belt.setState(0);
+                belt.setState(0);   // moving left fast
             }
             isSelected = false;
             return true;

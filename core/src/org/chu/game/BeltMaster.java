@@ -17,6 +17,7 @@ import org.chu.game.ui.SelectButton;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -124,6 +125,16 @@ public class BeltMaster extends Game {
 
     public int getScale() {
         return SCALE;
+    }
+
+    /**
+     * Sets the current game screen after disposing of the previous one.
+     * @param from
+     * @param to
+     */
+    public void setScreenWithDispose(Screen from, Screen to) {
+        from.dispose();
+        setScreen(to);
     }
 
     public Texture getTexture(String string) {

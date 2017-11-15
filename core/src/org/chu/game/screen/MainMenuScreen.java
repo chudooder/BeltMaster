@@ -46,8 +46,7 @@ public class MainMenuScreen implements Screen {
 
     private void update() {
         if(Gdx.input.isTouched()) {
-            game.setScreen(new LevelSelectScreen(game));
-            dispose();
+            game.setScreenWithDispose(this, new LevelSelectScreen(game));
         }
     }
 

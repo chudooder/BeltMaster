@@ -27,6 +27,8 @@ public class Boxapult extends Entity {
     private final float y0;
     private final float flyTime;
 
+    private double animTimer;
+
     public static void setupAnimations(BeltMaster game) {
         SpriteSheet sheet = game.getSpriteSheet("game-objects");
         base = sheet.getRegion(0, 8, 2, 2);
@@ -37,8 +39,8 @@ public class Boxapult extends Entity {
         super(x, y);
 
         // position of the launched block
-        x0 = x;
-        y0 = y + 10;
+        this.x0 = x;
+        this.y0 = y + 10;
 
         float h;    // vertical distance between launch position and peak, should be negative
         if(destY > y0) {    // destination is above launch position
@@ -48,18 +50,20 @@ public class Boxapult extends Entity {
         }
 
         // calculate initial y velocity
-        vy = (float) Math.sqrt(-2f * Constants.GRAVITY * h);
+        this.vy = (float) Math.sqrt(-2f * Constants.GRAVITY * h);
 
         // calculate time t to complete arc
         flyTime = (float) (-vy - Math.sqrt(Math.pow(vy, 2) - 2 * Constants.GRAVITY * (y0 - destY)))
                 / Constants.GRAVITY;
 
         // calculate initial x velocity
-        vx = (destX - x0) / flyTime;
+        this.vx = (destX - x0) / flyTime;
 
-        System.out.printf("(%f, %f) to (%d, %d): vx = %f, vy = %f, t = %f", x0, y0, destX, destY, vx, vy, flyTime);
+        // System.out.printf("(%f, %f) to (%d, %d): vx = %f, vy = %f, t = %f", x0, y0, destX, destY, vx, vy, flyTime);
 
         this.hitbox = new Rectangle(x, y, 32, 32);
+
+        this.animTimer = 0.0f;
     }
 
     public float getVx() { return vx; }
@@ -68,13 +72,18 @@ public class Boxapult extends Entity {
     public float getY0() { return y0; }
     public float getFlyTime() { return flyTime; }
 
+    public void collideWithBlock() {
+        animTimer = 1.0;
+    }
+
     @Override
     public void update(double dt) {
-
+        animTimer = Math.max(0.0, animTimer - dt);
     }
 
     @Override
     public void render(float time, RenderQueue queue) {
         queue.draw(base, x, y, DEPTH);
+        queue.draw(top, x, y-5, DEPTH);
     }
 }

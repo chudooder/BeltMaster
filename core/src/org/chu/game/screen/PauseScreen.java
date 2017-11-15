@@ -44,7 +44,7 @@ public class PauseScreen implements Screen {
         resume.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                game.setScreen(gameScreen);
+                game.setScreenWithDispose(PauseScreen.this, gameScreen);
             }
         });
         table.add(resume);
@@ -54,8 +54,9 @@ public class PauseScreen implements Screen {
         levelSelect.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+                // Return to the level select screen, disposing both the game screen and this screen
                 gameScreen.dispose();
-                game.setScreen(new LevelSelectScreen(game));
+                game.setScreenWithDispose(PauseScreen.this, new LevelSelectScreen(game));
             }
         });
         table.add(levelSelect);
@@ -96,7 +97,7 @@ public class PauseScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        stage.dispose();
     }
 
 }

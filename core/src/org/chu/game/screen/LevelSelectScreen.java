@@ -49,7 +49,7 @@ public class LevelSelectScreen implements Screen {
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                     int index = box.getLevelIndex();
                     GameScreen screen = levelLoader.loadLevel(index);
-                    game.setScreen(screen);
+                    game.setScreenWithDispose(LevelSelectScreen.this, screen);
                 }
             });
             width += 80*game.getScale();
@@ -104,8 +104,7 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void dispose() {
-        // TODO Auto-generated method stub
-
+        stage.dispose();
     }
 
 }
