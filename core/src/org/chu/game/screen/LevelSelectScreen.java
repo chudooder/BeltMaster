@@ -4,17 +4,14 @@ import java.util.List;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.LevelLoader;
-import org.chu.game.ui.SelectButton;
+import org.chu.game.ui.SelectLevelButton;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -43,7 +40,7 @@ public class LevelSelectScreen implements Screen {
         List<String> levels = levelLoader.getLevelNames();
         int width = 0;
         for(int i=0; i<levels.size(); i++) {
-            final SelectButton box = new SelectButton(levels.get(i), i);
+            final SelectLevelButton box = new SelectLevelButton(levels.get(i), i);
             box.addListener(new ClickListener(){
                 @Override
                 public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

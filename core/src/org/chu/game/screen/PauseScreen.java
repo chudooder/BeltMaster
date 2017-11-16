@@ -1,7 +1,7 @@
 package org.chu.game.screen;
 
 import org.chu.game.BeltMaster;
-import org.chu.game.ui.LevelSelectButton;
+import org.chu.game.ui.GoToLevelSelectButton;
 import org.chu.game.ui.ResumeButton;
 
 import com.badlogic.gdx.Gdx;
@@ -50,7 +50,7 @@ public class PauseScreen implements Screen {
         table.add(resume);
 
         // level select button
-        LevelSelectButton levelSelect = new LevelSelectButton();
+        GoToLevelSelectButton levelSelect = new GoToLevelSelectButton();
         levelSelect.addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {

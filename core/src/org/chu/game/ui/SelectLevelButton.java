@@ -2,6 +2,7 @@ package org.chu.game.ui;
 
 import org.chu.game.BeltMaster;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -9,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
-public class SelectButton extends Button {
+public class SelectLevelButton extends Button {
 
     private static Drawable imageUp;
     private static Drawable imageDown;
@@ -24,7 +25,7 @@ public class SelectButton extends Button {
         font = game.getFont("vcr-osd-mono");
     }
 
-    public SelectButton(String name, int index) {
+    public SelectLevelButton(String name, int index) {
         super(imageUp, imageDown);
         this.levelName = name;
         this.levelIndex = index;
@@ -33,6 +34,7 @@ public class SelectButton extends Button {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
+        font.setColor(Color.WHITE);
         font.draw(batch, levelName, getX(), getY());
     }
 

@@ -24,6 +24,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -35,6 +37,8 @@ public class GameScreen implements Screen {
         WON,
         LOST
     }
+
+    private static TextureRegion background;
 
     private BeltMaster game;
     private boolean isPaused;
@@ -52,6 +56,11 @@ public class GameScreen implements Screen {
 
     private InputMultiplexer input;
     private RenderQueue renderQueue;
+
+    public static void setupAnimations(BeltMaster game) {
+        background = new TextureRegion(game.getTexture("bg"));
+        System.out.println(background.getRegionHeight());
+    }
 
     public GameScreen(BeltMaster game) {
         this.game = game;
@@ -152,6 +161,9 @@ public class GameScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.projection);
         game.batch.setTransformMatrix(camera.view);
+
+        // draw background
+        renderQueue.draw(background, 0, 0, 999);
 
         // get render calls
         for(Entity e : entities) {

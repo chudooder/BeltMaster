@@ -8,12 +8,13 @@ import org.chu.game.objects.ScorePopup;
 import org.chu.game.objects.Spawner;
 import org.chu.game.objects.Truck;
 import org.chu.game.render.SpriteSheet;
+import org.chu.game.screen.GameScreen;
 import org.chu.game.screen.MainMenuScreen;
-import org.chu.game.ui.LevelSelectButton;
+import org.chu.game.ui.GoToLevelSelectButton;
 import org.chu.game.ui.PauseButton;
 import org.chu.game.ui.ResumeButton;
 import org.chu.game.ui.ScoreHUD;
-import org.chu.game.ui.SelectButton;
+import org.chu.game.ui.SelectLevelButton;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -71,11 +72,12 @@ public class BeltMaster extends Game {
         Recycler.setupAnimations(this);
         Boxapult.setupAnimations(this);
         ScorePopup.setupAnimations(this);
-        SelectButton.setupAnimations(this);
+        SelectLevelButton.setupAnimations(this);
         ScoreHUD.setupAnimations(this);
         PauseButton.setupAnimations(this);
         ResumeButton.setupAnimations(this);
-        LevelSelectButton.setupAnimations(this);
+        GoToLevelSelectButton.setupAnimations(this);
+        GameScreen.setupAnimations(this);
 
         this.setScreen(new MainMenuScreen(this));
     }
@@ -93,6 +95,7 @@ public class BeltMaster extends Game {
         assets.load("img/resume-button"+suffix+".png", Texture.class);
         assets.load("img/level-select-button"+suffix+".png", Texture.class);
         assets.load("img/boxapult"+suffix+".png", Texture.class);
+        assets.load("img/bg"+suffix+".png", Texture.class);
         assets.load("fonts/vcr-osd-mono"+suffix+".fnt", BitmapFont.class);
         assets.load("audio/spawner.wav", Sound.class);
         assets.load("audio/box-fall-1.wav", Sound.class);
