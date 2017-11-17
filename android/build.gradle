@@ -1,10 +1,11 @@
 android {
     buildToolsVersion '25.0.0'
-    compileSdkVersion 21
+    compileSdkVersion 26
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
+            jniLibs.srcDirs = ['libs']
             aidl.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             res.srcDirs = ['res']
