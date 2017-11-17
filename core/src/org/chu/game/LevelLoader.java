@@ -30,7 +30,7 @@ public class LevelLoader {
         Scanner in = new Scanner(levelsFile.readString());
         while(in.hasNextLine()) {
             String line = in.nextLine();
-            if(line.isEmpty()) continue;
+            if(line.trim().length() == 0) continue;
             if(line.startsWith("#")) continue;
             levels.add(line);
         }

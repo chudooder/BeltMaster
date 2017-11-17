@@ -1,0 +1,16 @@
+.nick Split Attention
+.miss 5
+.pool Rx10 Bx10 Gx10
+.spawner 5 1 0 ???????????????
+.spawner 19 1 0 ???????????????
+.belt 2 4 6 3 false
+.belt 17 4 6 1 false
+.belt 7 7 4 3 false
+.belt 14 7 4 1 false
+.belt 4 9 5 1 false
+.belt 16 9 5 3 false
+.belt 10 10 5 2 false
+.truck 3 G
+.truck 9 B
+.truck 15 R
+.truck 21 G
