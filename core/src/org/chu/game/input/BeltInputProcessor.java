@@ -6,15 +6,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class BeltInputProcessor implements InputProcessor {
 
     private Belt belt;
     private Rectangle box;
 
-    public BeltInputProcessor(Belt b) {
+    private boolean isSelected;
+    private int touchPointerIndex;
+    private long touchTime;
+    private float touchX;
+
+    private Viewport viewport;
+    private int scale;
+
+    public BeltInputProcessor(Belt b, Viewport viewport, int scale) {
         belt = b;
-        box = b.hitbox;
+        box = b.getTouchRegion();
+        isSelected = false;
+        this.viewport = viewport;
+        this.scale = scale;
     }
 
     @Override
@@ -34,33 +48,57 @@ public class BeltInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        // check button
-        if(button != Input.Buttons.LEFT)
+        Vector3 xy = viewport.getCamera().unproject(new Vector3(screenX, screenY, 0));
+        float x = xy.x / scale;
+        float y = xy.y / scale;
+        if(x < box.x || x > box.x + box.width
+                || y < box.y || y > box.y + box.height)
             return false;
 
-        // correct touch location to match view
-//        System.out.println("screenX: "+screenX +" screenY: "+screenY+ " sizeX: "+Gdx.graphics.getWidth());
-        screenX = screenX * 400 / Gdx.graphics.getWidth();
-        screenY = (Gdx.graphics.getHeight() - screenY) * 240 / Gdx.graphics.getHeight();
-//        System.out.println("ADJUSTED: screenX: "+screenX +" screenY: "+screenY);
-
-
-        // check bounds
-        if(screenX < box.x || screenX > box.x + box.width
-                || screenY < box.y || screenY > box.y + box.height)
-            return false;
-        // process input
-        if(screenX < box.x + box.width / 2) {
-            belt.setState(belt.getState() - 1);
-        } else {
-            belt.setState(belt.getState() + 1);
-        }
+        isSelected = true;
+        touchPointerIndex = pointer;
+        touchX = x;
+        touchTime = TimeUtils.millis();
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        if(!isSelected || this.touchPointerIndex != pointer) {
+            return false;
+        }
+
+        // reset the variables
+        isSelected = false;
+        touchPointerIndex = -1;
+
+        Vector3 xy = viewport.getCamera().unproject(new Vector3(screenX, screenY, 0));
+        float x = xy.x / scale;
+        float y = xy.y / scale;
+
+        long curTime = TimeUtils.millis();
+        float secondsDiff = (curTime - touchTime) / 1000f;
+
+        if(secondsDiff > 0.75f) {
+            return false;
+        }
+
+        float vx = (x - touchX) / secondsDiff;
+
+        if(Math.abs(vx) < 20) {
+            belt.setState(2);   // stop belt
+        }
+        else if(vx > 1500) {
+            belt.setState(4);   // moving right fast
+        } else if(vx > 0) {
+            belt.setState(3);   // moving right
+        } else if(vx > -1500) {
+            belt.setState(1);   // moving left
+        } else {
+            belt.setState(0);   // moving left fast
+        }
+
+        return true;
     }
 
     @Override

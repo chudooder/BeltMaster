@@ -7,6 +7,7 @@ import java.util.Queue;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.input.BeltGestureProcessor;
+import org.chu.game.input.BeltInputProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
 import org.chu.game.objects.Boxapult;
@@ -114,8 +115,8 @@ public class GameScreen implements Screen {
     public void createBelt(int x, int y, int length, int initState, boolean locked) {
         Belt b = new Belt(x, y, length, initState, locked);
         addEntity(b);
-//        input.addProcessor(new BeltInputProcessor(b));
-        input.addProcessor(new GestureDetector(new BeltGestureProcessor(b, viewport, game.getScale())));
+        input.addProcessor(new BeltInputProcessor(b, viewport, game.getScale()));
+//        input.addProcessor(new GestureDetector(new BeltGestureProcessor(b, viewport, game.getScale())));
     }
 
     public void createBox(int x, int y, Color c) {

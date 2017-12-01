@@ -1,12 +1,15 @@
 package org.chu.game.objects;
 
 import org.chu.game.BeltMaster;
+import org.chu.game.render.RenderCall;
 import org.chu.game.render.RenderQueue;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 public class Belt extends Entity {
@@ -108,6 +111,7 @@ public class Belt extends Entity {
         timer += Gdx.graphics.getDeltaTime() * (state - 2);
         frame = (int) (timer / SLOW_SPEED % 8);
         if (frame < 0) frame += 8;
+
         queue.draw(leftFrames[frame % 4], x, y, DEPTH);
         for (int i = 1; i < length - 1; i++)
             queue.draw(midFrames[frame % 4], x + i * 32, y, DEPTH);
@@ -147,6 +151,7 @@ public class Belt extends Entity {
         if (locked) {
             queue.draw(lock, x + (length - 1) * 16, y - 10, DEPTH);
         }
+
     }
 
     @Override
