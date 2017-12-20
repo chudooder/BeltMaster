@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Queue;
 
 import org.chu.game.BeltMaster;
-import org.chu.game.input.BeltGestureProcessor;
 import org.chu.game.input.BeltInputProcessor;
 import org.chu.game.objects.Belt;
 import org.chu.game.objects.Box;
@@ -25,14 +24,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class GameScreen implements Screen {
+
+    private static final int NUM_TILES_V = 13;
+    private static final int NUM_TILES_H = 25;
 
     public enum GameOutcome {
         WON,
@@ -67,9 +67,9 @@ public class GameScreen implements Screen {
         this.game = game;
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800*game.getScale(), 450*game.getScale());
-        viewport = new ExtendViewport(800*game.getScale(), 450*game.getScale(), camera);
-        viewport.update(800*game.getScale(), 450*game.getScale());
+        camera.setToOrtho(false, game.getScreenWidth(), game.getScreenHeight());
+        viewport = new ExtendViewport(game.getScreenWidth(), game.getScreenHeight(), camera);
+        viewport.update(game.getScreenWidth(), game.getScreenHeight());
 
         entities = new ArrayList<Entity>();
         spawners = new ArrayList<Spawner>();
@@ -130,7 +130,7 @@ public class GameScreen implements Screen {
     }
 
     public void createSpawner(int x, Queue<Color> colors, float spawnTime, float offset) {
-        Spawner s = new Spawner(x, 32*13, colors, spawnTime, offset);
+        Spawner s = new Spawner(x, 32*NUM_TILES_V, colors, spawnTime, offset);
         spawners.add(s);
         addEntity(s);
     }

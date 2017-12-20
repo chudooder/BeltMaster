@@ -17,6 +17,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class LevelSelectScreen implements Screen {
 
+    private static final int BUTTON_PADDING = 16;
+    private static final int TABLE_WIDTH = 600;
+
     private BeltMaster game;
     private LevelLoader levelLoader;
 
@@ -38,7 +41,11 @@ public class LevelSelectScreen implements Screen {
 
     private void setupButtons() {
         List<String> levels = levelLoader.getLevelNames();
-        int width = 0;
+
+        float width = 0;
+        float padding = BUTTON_PADDING * game.getScale();
+        float tableWidth = TABLE_WIDTH * game.getScale();
+
         for(int i=0; i<levels.size(); i++) {
             final SelectLevelButton box = new SelectLevelButton(levels.get(i), i);
             box.addListener(new ClickListener(){
@@ -49,9 +56,9 @@ public class LevelSelectScreen implements Screen {
                     game.setScreenWithDispose(LevelSelectScreen.this, screen);
                 }
             });
-            width += 80*game.getScale();
-            table.add(box).pad(16*game.getScale());
-            if(width > 600*game.getScale()) {
+            width += SelectLevelButton.BUTTON_SIZE + padding;
+            table.add(box).pad(padding);
+            if(width > tableWidth) {
                 width = 0;
                 System.out.println("row");
                 table.row();

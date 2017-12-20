@@ -31,7 +31,9 @@ import java.util.Map;
 
 public class BeltMaster extends Game {
 
-    private static int SCALE = 2;
+    public static final int TARGET_WIDTH = 800;
+    public static final int TARGET_HEIGHT = 450;
+    private static int SCALE;
     public SpriteBatch batch;
     public BitmapFont font;
 
@@ -43,16 +45,15 @@ public class BeltMaster extends Game {
 
     @Override
     public void create() {
-        System.out.println(Gdx.graphics.getWidth() +" "+ Gdx.graphics.getHeight());
         // figure out what graphics scale we need
-        if(Gdx.graphics.getWidth() > 800) {
+        if(Gdx.graphics.getWidth() > TARGET_WIDTH) {
             SCALE = 2;
         } else {
             SCALE = 1;
         }
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800*SCALE, 450*SCALE);
+        camera.setToOrtho(false, getScreenWidth(), getScreenHeight());
 
         batch = new SpriteBatch();
         assets = new AssetManager();
@@ -128,6 +129,22 @@ public class BeltMaster extends Game {
 
     public int getScale() {
         return SCALE;
+    }
+
+    /**
+     * Returns the actual width of the screen in pixels
+     * @return
+     */
+    public int getScreenWidth() {
+        return getScale() * TARGET_WIDTH;
+    }
+
+    /**
+     * Returns the actual height of the screen in pixels
+     * @return
+     */
+    public int getScreenHeight() {
+        return getScale() * TARGET_HEIGHT;
     }
 
     /**

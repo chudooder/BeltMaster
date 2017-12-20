@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 public class SelectLevelButton extends Button {
 
+    public static float BUTTON_SIZE;
+
     private static Drawable imageUp;
     private static Drawable imageDown;
     private static BitmapFont font;
@@ -23,6 +25,9 @@ public class SelectLevelButton extends Button {
         imageUp = new Image(game.getTexture("select-box")).getDrawable();
         imageDown = new Image(game.getTexture("select-box-down")).getDrawable();
         font = game.getFont("vcr-osd-mono");
+
+        BUTTON_SIZE = game.getTexture("select-box").getWidth();
+        System.out.println("Button size: " + BUTTON_SIZE);
     }
 
     public SelectLevelButton(String name, int index) {
