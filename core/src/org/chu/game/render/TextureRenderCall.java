@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class TextureRenderCall extends RenderCall {
+public class TextureRenderCall extends RenderCall2d {
 
     TextureRegion region;
     float x;

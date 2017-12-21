@@ -21,10 +21,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,12 +37,13 @@ public class BeltMaster extends Game {
     public static final int TARGET_WIDTH = 800;
     public static final int TARGET_HEIGHT = 450;
     private static int SCALE;
-    public SpriteBatch batch;
+    public SpriteBatch spriteBatch;
+    public ModelBatch modelBatch;
     public BitmapFont font;
 
-    private OrthographicCamera camera;
     private AssetManager assets;
     private Map<String, SpriteSheet> spriteSheets;
+    private Map<String, ShaderProgram> shaders;
 
     private float stateTime;
 
@@ -52,14 +56,14 @@ public class BeltMaster extends Game {
             SCALE = 1;
         }
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, getScreenWidth(), getScreenHeight());
-
-        batch = new SpriteBatch();
+        spriteBatch = new SpriteBatch();
+        modelBatch = new ModelBatch();
         assets = new AssetManager();
         spriteSheets = new HashMap<String, SpriteSheet>();
+        shaders = new HashMap<String, ShaderProgram>();
 
         loadAssets();
+        loadShaders();
 
         while(!assets.update());
 
@@ -107,6 +111,13 @@ public class BeltMaster extends Game {
         assets.load("audio/score.wav", Sound.class);
     }
 
+    private void loadShaders() {
+        ShaderProgram defaultShader = new ShaderProgram(
+                new FileHandle("shaders/default.vert"),
+                new FileHandle("shaders/default.frag"));
+        shaders.put("default", defaultShader);
+    }
+
     private void makeSpriteSheets() {
         spriteSheets.put("game-objects", new SpriteSheet(getTexture("game-objects"), 16, 16));
     }
@@ -119,7 +130,8 @@ public class BeltMaster extends Game {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        spriteBatch.dispose();
+        modelBatch.dispose();
         assets.clear();
     }
 
@@ -174,5 +186,9 @@ public class BeltMaster extends Game {
 
     public SpriteSheet getSpriteSheet(String string) {
         return spriteSheets.get(string);
+    }
+
+    public ShaderProgram getShader(String string) {
+        return shaders.get(string);
     }
 }

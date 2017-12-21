@@ -2,16 +2,13 @@ package org.chu.game.ui;
 
 import org.chu.game.BeltMaster;
 import org.chu.game.objects.Entity;
-import org.chu.game.render.RenderCall;
 import org.chu.game.render.RenderQueue;
 import org.chu.game.screen.GameScreen;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 
 public class ScoreHUD extends Entity {
 

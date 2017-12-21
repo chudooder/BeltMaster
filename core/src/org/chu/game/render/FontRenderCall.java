@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Shawn on 11/9/2017.
  */
 
-public class FontRenderCall extends RenderCall {
+public class FontRenderCall extends RenderCall2d {
     BitmapFont font;
     String text;
     float x;

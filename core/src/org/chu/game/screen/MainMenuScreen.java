@@ -33,12 +33,12 @@ public class MainMenuScreen implements Screen {
 
         camera.update();
 
-        game.batch.setProjectionMatrix(camera.combined);
+        game.spriteBatch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
+        game.spriteBatch.begin();
         // draw things
-        font.draw(game.batch, "BELTMASTER", 100, 150);
-        game.batch.end();
+        font.draw(game.spriteBatch, "BELTMASTER", 100, 150);
+        game.spriteBatch.end();
 
         // update things
         update();

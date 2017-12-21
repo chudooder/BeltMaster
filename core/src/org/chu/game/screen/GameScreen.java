@@ -25,7 +25,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -45,6 +49,7 @@ public class GameScreen implements Screen {
     private boolean isPaused;
     private Viewport viewport;
     private OrthographicCamera camera;
+    private Environment environment;
     private List<Entity> entities;
     private List<Spawner> spawners;
 
@@ -68,8 +73,15 @@ public class GameScreen implements Screen {
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, game.getScreenWidth(), game.getScreenHeight());
+        camera.near = -1000f;
+        camera.far = 1000f;
+        camera.update(true);
         viewport = new ExtendViewport(game.getScreenWidth(), game.getScreenHeight(), camera);
         viewport.update(game.getScreenWidth(), game.getScreenHeight());
+
+        environment = new Environment();
+        environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1f));
+        environment.add(new DirectionalLight().set(Color.WHITE, new Vector3(0f, -1f, 0f)));
 
         entities = new ArrayList<Entity>();
         spawners = new ArrayList<Spawner>();
@@ -157,11 +169,9 @@ public class GameScreen implements Screen {
         update(Gdx.graphics.getDeltaTime());
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.projection);
-        game.batch.setTransformMatrix(camera.view);
 
         // draw background
         renderQueue.draw(background, 0, 0, 999);
@@ -172,9 +182,7 @@ public class GameScreen implements Screen {
         }
 
         // draw things
-        game.batch.begin();
-        renderQueue.execute(game.batch);
-        game.batch.end();
+        renderQueue.execute(game.spriteBatch, game.modelBatch, camera, environment);
     }
 
     private void update(double dt) {
